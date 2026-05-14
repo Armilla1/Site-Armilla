@@ -1,0 +1,74 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&family=Poppins:wght@400;500;600;700;800&display=swap');
+
+:root {
+  --purple-dark: #3a0080;
+  --purple-mid: #5b00b5;
+  --purple-main: #7b2fff;
+  --purple-light: #a855f7;
+  --blue-main: #2563eb;
+  --blue-light: #60a5fa;
+  --cyan: #38bdf8;
+  --pink: #e040fb;
+  --white: #ffffff;
+  --off-white: #f8f6ff;
+  --gray-light: #e9e4f8;
+  --gray-text: #6b7280;
+  --dark-bg: #0a0014;
+  --card-bg: #ffffff;
+  --text-dark: #1a1a2e;
+  --text-body: #374151;
+
+  --font-display: 'Poppins', sans-serif;
+  --font-body: 'Nunito', sans-serif;
+
+  --radius-sm: 8px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
+  --radius-xl: 32px;
+
+  --shadow-card: 0 4px 24px rgba(123, 47, 255, 0.12);
+  --shadow-glow: 0 0 40px rgba(123, 47, 255, 0.35);
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-body);
+  color: var(--text-body);
+  background: var(--white);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+ul {
+  list-style: none;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  outline: none;
+  font-family: var(--font-body);
+}

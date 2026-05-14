@@ -1,0 +1,301 @@
+.hero {
+  position: relative;
+  min-height: 100vh;
+  background: var(--dark-bg);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  border-radius: 0 0 32px 32px;
+}
+
+/* Background layers */
+.hero__bg {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.hero__grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(123, 47, 255, 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(123, 47, 255, 0.08) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+.hero__glow {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+}
+
+.hero__glow--1 {
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, rgba(123, 47, 255, 0.4) 0%, transparent 70%);
+  top: -100px;
+  right: -100px;
+  animation: glowPulse 4s ease-in-out infinite;
+}
+
+.hero__glow--2 {
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, rgba(56, 189, 248, 0.25) 0%, transparent 70%);
+  bottom: -80px;
+  left: 10%;
+  animation: glowPulse 5s ease-in-out infinite reverse;
+}
+
+@keyframes glowPulse {
+  0%, 100% { opacity: 0.6; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.1); }
+}
+
+/* Circuit lines */
+.hero__circuit {
+  position: absolute;
+  inset: 0;
+}
+
+.hero__circuit-line {
+  position: absolute;
+  background: linear-gradient(90deg, transparent, rgba(168, 85, 247, 0.6), rgba(56, 189, 248, 0.6), transparent);
+  border-radius: 2px;
+  animation: circuitFlow 3s linear infinite;
+}
+
+.hero__circuit-line--1 { width: 200px; height: 2px; top: 30%; left: 10%; animation-delay: 0s; }
+.hero__circuit-line--2 { width: 2px; height: 150px; top: 20%; left: 30%; animation-delay: 0.5s; background: linear-gradient(180deg, transparent, rgba(168, 85, 247, 0.6), rgba(56, 189, 248, 0.4), transparent); }
+.hero__circuit-line--3 { width: 120px; height: 2px; top: 60%; left: 5%; animation-delay: 1s; }
+.hero__circuit-line--4 { width: 180px; height: 2px; top: 75%; right: 15%; animation-delay: 1.5s; }
+.hero__circuit-line--5 { width: 2px; height: 100px; bottom: 20%; right: 30%; animation-delay: 0.8s; background: linear-gradient(180deg, transparent, rgba(56, 189, 248, 0.5), transparent); }
+.hero__circuit-line--6 { width: 250px; height: 2px; top: 45%; right: 5%; animation-delay: 0.3s; }
+
+@keyframes circuitFlow {
+  0% { opacity: 0; }
+  50% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+/* Container */
+.hero__container {
+  position: relative;
+  z-index: 2;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 120px 24px 80px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  gap: 48px;
+  width: 100%;
+}
+
+/* Content */
+.hero__logo-block {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 32px;
+  animation: fadeUp 0.8s ease forwards;
+}
+
+.hero__logo-icon {
+  width: 48px;
+  height: 48px;
+}
+
+.hero__brand {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 22px;
+  color: var(--white);
+  letter-spacing: 3px;
+}
+
+.hero__title {
+  font-size: clamp(28px, 4vw, 48px);
+  font-weight: 800;
+  color: var(--white);
+  line-height: 1.2;
+  margin-bottom: 40px;
+  animation: fadeUp 0.8s ease 0.15s both;
+}
+
+.hero__title-highlight {
+  background: linear-gradient(135deg, #c084fc, #60a5fa);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.hero__btn {
+  display: inline-block;
+  padding: 14px 36px;
+  background: transparent;
+  border: 2px solid rgba(255, 255, 255, 0.6);
+  border-radius: 50px;
+  color: var(--white);
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 16px;
+  letter-spacing: 0.5px;
+  transition: all 0.3s ease;
+  animation: fadeUp 0.8s ease 0.3s both;
+}
+
+.hero__btn:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: var(--purple-light);
+  box-shadow: 0 0 24px rgba(168, 85, 247, 0.4);
+  transform: translateY(-2px);
+}
+
+/* Watch visual */
+.hero__visual {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  animation: fadeUp 0.8s ease 0.2s both;
+}
+
+.hero__watch-wrapper {
+  position: relative;
+  width: 240px;
+  height: 300px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hero__watch-glow {
+  position: absolute;
+  width: 200px;
+  height: 200px;
+  background: radial-gradient(circle, rgba(168, 85, 247, 0.5) 0%, transparent 70%);
+  filter: blur(30px);
+  animation: watchGlow 3s ease-in-out infinite;
+}
+
+@keyframes watchGlow {
+  0%, 100% { opacity: 0.7; transform: scale(0.9); }
+  50% { opacity: 1; transform: scale(1.1); }
+}
+
+.hero__watch {
+  position: relative;
+  z-index: 2;
+  animation: watchFloat 3s ease-in-out infinite;
+}
+
+@keyframes watchFloat {
+  0%, 100% { transform: translateY(0px) rotate(-5deg); }
+  50% { transform: translateY(-16px) rotate(-3deg); }
+}
+
+.hero__watch-body {
+  position: relative;
+  width: 120px;
+  height: 140px;
+  background: linear-gradient(145deg, #f0ece8, #e8e4df);
+  border-radius: 28px;
+  box-shadow:
+    0 20px 60px rgba(0, 0, 0, 0.4),
+    inset 0 1px 0 rgba(255,255,255,0.8),
+    0 0 0 1px rgba(0,0,0,0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hero__watch-screen {
+  width: 80px;
+  height: 10px;
+  background: linear-gradient(90deg, #555, #888);
+  border-radius: 5px;
+  box-shadow: 0 0 8px rgba(0,0,0,0.3);
+}
+
+.hero__watch-band {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 90px;
+  background: linear-gradient(145deg, #e8d5c0, #d4bfa8);
+  border-radius: 6px;
+}
+
+.hero__watch-band--top {
+  top: -60px;
+  height: 64px;
+  border-radius: 8px 8px 4px 4px;
+}
+
+.hero__watch-band--bottom {
+  bottom: -60px;
+  height: 64px;
+  border-radius: 4px 4px 8px 8px;
+}
+
+.hero__watch-sensor {
+  position: absolute;
+  bottom: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 30px;
+  height: 6px;
+  background: rgba(0,0,0,0.12);
+  border-radius: 3px;
+}
+
+.hero__pin {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 32px;
+  animation: pinBounce 2s ease-in-out infinite;
+  z-index: 3;
+}
+
+@keyframes pinBounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+/* Animations */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .hero__container {
+    grid-template-columns: 1fr;
+    text-align: center;
+    padding-top: 100px;
+  }
+
+  .hero__logo-block {
+    justify-content: center;
+  }
+
+  .hero__visual {
+    order: -1;
+  }
+
+  .hero__watch-wrapper {
+    width: 180px;
+    height: 220px;
+  }
+
+  .hero__watch-body {
+    width: 90px;
+    height: 106px;
+  }
+
+  .hero__watch-band--top { height: 48px; top: -44px; }
+  .hero__watch-band--bottom { height: 48px; bottom: -44px; }
+}

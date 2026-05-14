@@ -1,0 +1,88 @@
+.milla {
+  padding: 80px 0;
+  background: linear-gradient(135deg, #eff6ff 0%, #f5f3ff 50%, #fdf4ff 100%);
+}
+
+.milla__container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.milla__content {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 48px;
+}
+
+.milla__title {
+  font-size: clamp(24px, 3vw, 36px);
+  font-weight: 800;
+  color: var(--text-dark);
+  line-height: 1.2;
+  margin-bottom: 20px;
+}
+
+.milla__title-highlight {
+  color: var(--purple-main);
+}
+
+.milla__description {
+  font-size: 15px;
+  color: var(--text-body);
+  line-height: 1.8;
+  max-width: 520px;
+}
+
+.milla__mascot {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.milla__bird {
+  width: 200px;
+  height: 200px;
+  position: relative;
+  z-index: 2;
+  animation: birdFloat 3.5s ease-in-out infinite;
+  filter: drop-shadow(0 16px 32px rgba(123, 47, 255, 0.3));
+}
+
+.milla__bird-glow {
+  position: absolute;
+  bottom: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 120px;
+  height: 30px;
+  background: radial-gradient(ellipse, rgba(123, 47, 255, 0.3) 0%, transparent 70%);
+  filter: blur(8px);
+  animation: shadowPulse 3.5s ease-in-out infinite;
+}
+
+@keyframes birdFloat {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-14px); }
+}
+
+@keyframes shadowPulse {
+  0%, 100% { opacity: 0.8; transform: translateX(-50%) scaleX(1); }
+  50% { opacity: 0.4; transform: translateX(-50%) scaleX(0.8); }
+}
+
+@media (max-width: 768px) {
+  .milla__content {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+
+  .milla__description {
+    max-width: 100%;
+  }
+
+  .milla__mascot {
+    display: flex;
+    justify-content: center;
+  }
+}

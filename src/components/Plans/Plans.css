@@ -1,0 +1,137 @@
+.plans {
+  padding: 80px 0;
+  background: var(--off-white);
+}
+
+.plans__container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 24px;
+  text-align: center;
+}
+
+.plans__title {
+  font-size: clamp(26px, 3.5vw, 40px);
+  font-weight: 800;
+  color: var(--text-dark);
+  margin-bottom: 48px;
+}
+
+.plans__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  align-items: start;
+}
+
+.plans__card {
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  padding: 28px 24px;
+  border: 2px solid var(--gray-light);
+  text-align: left;
+  position: relative;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.plans__card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-card);
+}
+
+.plans__card--recommended {
+  border-color: var(--purple-main);
+  box-shadow: 0 0 0 1px var(--purple-main), 0 8px 40px rgba(123, 47, 255, 0.2);
+}
+
+.plans__card-header {
+  margin-bottom: 20px;
+}
+
+.plans__plan-name {
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--text-dark);
+  margin-bottom: 8px;
+}
+
+.plans__price {
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--white);
+  background: var(--purple-main);
+  padding: 10px 16px;
+  border-radius: var(--radius-sm);
+  display: inline-block;
+}
+
+.plans__price--free {
+  background: linear-gradient(135deg, #06b6d4, #0284c7);
+}
+
+.plans__features {
+  list-style: none;
+  margin-bottom: 24px;
+}
+
+.plans__feature {
+  display: flex;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--text-body);
+  padding: 5px 0;
+  line-height: 1.5;
+  border-bottom: 1px solid var(--gray-light);
+}
+
+.plans__feature:last-child {
+  border-bottom: none;
+}
+
+.plans__feature-dot {
+  color: var(--purple-main);
+  flex-shrink: 0;
+  font-size: 16px;
+  line-height: 1.2;
+}
+
+.plans__badge {
+  display: inline-block;
+  background: linear-gradient(135deg, #f59e0b, #f97316);
+  color: white;
+  font-weight: 700;
+  font-size: 13px;
+  padding: 6px 14px;
+  border-radius: 20px;
+  margin-bottom: 16px;
+}
+
+.plans__cta {
+  width: 100%;
+  padding: 13px;
+  border-radius: var(--radius-md);
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 15px;
+  background: linear-gradient(135deg, #06b6d4, #0284c7);
+  color: white;
+  transition: all 0.25s ease;
+}
+
+.plans__cta--recommended {
+  background: linear-gradient(135deg, var(--purple-main), var(--purple-mid));
+}
+
+.plans__cta:hover {
+  opacity: 0.88;
+  transform: translateY(-1px);
+}
+
+@media (max-width: 768px) {
+  .plans__grid {
+    grid-template-columns: 1fr;
+    max-width: 400px;
+    margin: 0 auto;
+  }
+}

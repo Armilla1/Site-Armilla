@@ -1,0 +1,644 @@
+/* ═══════════════════════════════════════════════════════════════
+   ARMILLA — ACCESSIBILITY.CSS  (v2 — bugs corrigidos)
+═══════════════════════════════════════════════════════════════ */
+
+/* ── Utilitário: apenas leitores de tela ── */
+.a11y-sr-only {
+  position: absolute; width: 1px; height: 1px; padding: 0;
+  margin: -1px; overflow: hidden; clip: rect(0,0,0,0);
+  white-space: nowrap; border: 0;
+}
+
+/* ══════════════════════════════════════
+   SKIP LINK
+══════════════════════════════════════ */
+.skip-link {
+  position: fixed; top: -100px; left: 24px; z-index: 10000;
+  background: #facc15; color: #000; font-weight: 800; font-size: 14px;
+  padding: 10px 20px; border-radius: 8px; text-decoration: none;
+  transition: top 0.2s;
+}
+.skip-link:focus { top: 16px; }
+
+/* ══════════════════════════════════════
+   FLOATING TRIGGER — NUNCA SOME
+   position:fixed + z-index alto +
+   filter:none garante visibilidade
+   em TODOS os modos de daltonismo
+══════════════════════════════════════ */
+.a11y-trigger {
+  position: fixed !important;
+  bottom: 28px;
+  right: 28px;
+  z-index: 99999 !important;   /* acima de tudo */
+  filter: none !important;      /* imune a filtros de daltonismo */
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: linear-gradient(135deg, #640E86, #111D96) !important;
+  color: #fff !important;
+  border: 2px solid rgba(255,255,255,0.25) !important;
+  border-radius: 30px;
+  padding: 12px 20px;
+  font-family: var(--font-body, sans-serif);
+  font-weight: 800;
+  font-size: 14px;
+  cursor: pointer;
+  box-shadow: 0 6px 28px rgba(100,14,134,0.5) !important;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  white-space: nowrap;
+}
+.a11y-trigger:hover { transform: translateY(-2px); box-shadow: 0 10px 36px rgba(100,14,134,0.65) !important; }
+.a11y-trigger:focus-visible { outline: 3px solid #facc15 !important; outline-offset: 3px; }
+
+/* ══════════════════════════════════════
+   PANEL — NUNCA SOME
+══════════════════════════════════════ */
+.a11y-panel {
+  position: fixed !important;
+  bottom: 88px;
+  right: 28px;
+  z-index: 99998 !important;
+  filter: none !important;      /* imune a filtros de daltonismo */
+  width: 320px;
+  background: #1a0035 !important;
+  border: 1.5px solid rgba(168,85,247,0.4) !important;
+  border-radius: 20px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.7), 0 0 0 1px rgba(168,85,247,0.12) !important;
+  overflow: hidden;
+  animation: a11y-slide-up 0.22s ease;
+}
+
+@keyframes a11y-slide-up {
+  from { opacity: 0; transform: translateY(14px) scale(0.97); }
+  to   { opacity: 1; transform: translateY(0)   scale(1); }
+}
+
+.a11y-panel__header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 16px 20px 12px;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  background: rgba(168,85,247,0.1) !important;
+}
+
+.a11y-panel__title {
+  display: flex; align-items: center; gap: 8px;
+  font-family: var(--font-display, sans-serif);
+  font-size: 15px; font-weight: 800; color: #fff !important;
+}
+
+.a11y-panel__close {
+  width: 28px; height: 28px;
+  background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.18);
+  border-radius: 50%; color: rgba(255,255,255,0.75); font-size: 14px;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; transition: background 0.2s;
+}
+.a11y-panel__close:hover { background: rgba(255,255,255,0.2); color: #fff; }
+.a11y-panel__close:focus-visible { outline: 2px solid #facc15; }
+
+/* Section */
+.a11y-section {
+  padding: 14px 20px;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+.a11y-section__title {
+  font-family: var(--font-display, sans-serif); font-size: 11px; font-weight: 800;
+  text-transform: uppercase; letter-spacing: 1.2px;
+  color: rgba(255,255,255,0.5) !important; margin-bottom: 10px;
+}
+.a11y-hint {
+  font-size: 11px; color: rgba(255,255,255,0.45) !important;
+  margin-top: 8px;
+}
+.a11y-hint strong { color: rgba(255,255,255,0.75) !important; }
+
+/* ── CONTRASTE: 3 botões lado a lado ── */
+.a11y-contrast-btns {
+  display: flex; gap: 6px;
+}
+
+.a11y-contrast-btn {
+  flex: 1;
+  display: flex; flex-direction: column; align-items: center; gap: 4px;
+  padding: 10px 6px;
+  background: rgba(255,255,255,0.05);
+  border: 1.5px solid rgba(255,255,255,0.1);
+  border-radius: 12px;
+  color: rgba(255,255,255,0.8) !important;
+  font-family: var(--font-body, sans-serif);
+  font-weight: 700; font-size: 11px;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-align: center; line-height: 1.3;
+}
+.a11y-contrast-btn:hover { background: rgba(168,85,247,0.15); border-color: rgba(168,85,247,0.5); }
+.a11y-contrast-btn--active { background: rgba(168,85,247,0.22); border-color: #a855f7; color: #fff !important; }
+.a11y-contrast-btn:focus-visible { outline: 2px solid #facc15; outline-offset: 2px; }
+.a11y-contrast-btn__icon { font-size: 16px; }
+.a11y-contrast-btn__label { font-size: 11px; font-weight: 800; }
+
+/* ── DALTONISMO: lista de opções ── */
+.a11y-color-options { display: flex; flex-direction: column; gap: 5px; }
+
+.a11y-color-option {
+  display: flex; align-items: center; gap: 8px;
+  padding: 9px 12px;
+  background: rgba(255,255,255,0.04);
+  border: 1.5px solid rgba(255,255,255,0.08);
+  border-radius: 10px; cursor: pointer; transition: all 0.2s;
+}
+.a11y-color-option:hover { background: rgba(168,85,247,0.1); border-color: rgba(168,85,247,0.4); }
+.a11y-color-option--active { background: rgba(168,85,247,0.18); border-color: #a855f7; }
+.a11y-color-option:focus-within { outline: 2px solid #facc15; border-radius: 10px; }
+
+.a11y-color-option__left { display: flex; align-items: center; gap: 8px; flex: 1; min-width: 0; }
+.a11y-color-option__emoji { font-size: 14px; flex-shrink: 0; }
+.a11y-color-option__label {
+  font-weight: 700; font-size: 13px; color: #fff !important; white-space: nowrap;
+}
+.a11y-color-option__desc {
+  font-size: 10px; color: rgba(255,255,255,0.4) !important;
+  margin-left: auto; text-align: right; flex-shrink: 0;
+  max-width: 110px;
+}
+.a11y-color-option__check {
+  color: #a855f7; font-weight: 900; font-size: 14px; flex-shrink: 0;
+}
+
+/* ── FONTE: 2 botões ── */
+.a11y-font-btns { display: flex; gap: 8px; }
+
+.a11y-font-btn {
+  flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px;
+  padding: 10px 8px;
+  background: rgba(255,255,255,0.05);
+  border: 1.5px solid rgba(255,255,255,0.1);
+  border-radius: 12px;
+  color: rgba(255,255,255,0.8) !important;
+  font-family: var(--font-body, sans-serif); font-weight: 700; font-size: 12px;
+  cursor: pointer; transition: all 0.2s; text-align: center;
+}
+.a11y-font-btn:hover { background: rgba(168,85,247,0.15); border-color: rgba(168,85,247,0.5); }
+.a11y-font-btn--active { background: rgba(168,85,247,0.22); border-color: #a855f7; color: #fff !important; }
+.a11y-font-btn:focus-visible { outline: 2px solid #facc15; outline-offset: 2px; }
+.a11y-font-btn__icon { font-size: 15px; font-weight: 800; line-height: 1; }
+.a11y-font-btn__icon--big { font-size: 20px; }
+
+/* ── VOZ ── */
+.a11y-tts-btns { display: flex; gap: 8px; }
+.a11y-tts-btn {
+  flex: 1; padding: 9px 10px;
+  background: rgba(255,255,255,0.06);
+  border: 1.5px solid rgba(255,255,255,0.1); border-radius: 10px;
+  color: rgba(255,255,255,0.85) !important;
+  font-family: var(--font-body, sans-serif); font-weight: 700; font-size: 12px;
+  cursor: pointer; transition: all 0.2s;
+}
+.a11y-tts-btn:hover { background: rgba(168,85,247,0.2); border-color: #a855f7; }
+.a11y-tts-btn--stop:hover { background: rgba(239,68,68,0.15); border-color: #ef4444; }
+.a11y-tts-btn:focus-visible { outline: 2px solid #facc15; outline-offset: 2px; }
+
+.a11y-panel__note {
+  padding: 10px 20px; font-size: 11px;
+  color: rgba(255,255,255,0.3) !important; text-align: center;
+}
+
+/* ════════════════════════════════════════════════════════
+   DALTONISMO — FIX PRINCIPAL:
+   O filtro é aplicado via ::before pseudo ou em body children,
+   MAS nunca em .a11y-trigger nem .a11y-panel.
+   Usamos um wrapper #color-filter-layer em App.jsx,
+   ou aplicamos diretamente no body com exceção explícita.
+════════════════════════════════════════════════════════ */
+
+/* Wrapper que recebe o filtro */
+.color-filter-wrap {
+  /* herda o filtro via classe no wrapper */
+}
+html.color-protanopia   .color-filter-wrap { filter: sepia(0.35) saturate(0.85) hue-rotate(-20deg); }
+html.color-deuteranopia .color-filter-wrap { filter: sepia(0.25) saturate(0.75) hue-rotate(20deg);  }
+html.color-tritanopia   .color-filter-wrap { filter: sepia(0.35) saturate(0.8)  hue-rotate(90deg);  }
+
+/* Dentro do filtro, melhora contraste de textos */
+html.color-protanopia   .color-filter-wrap,
+html.color-deuteranopia .color-filter-wrap,
+html.color-tritanopia   .color-filter-wrap {
+  /* Textos mais pesados para compensar perda de contraste */
+}
+html.color-protanopia   .color-filter-wrap p,
+html.color-protanopia   .color-filter-wrap span,
+html.color-protanopia   .color-filter-wrap li,
+html.color-deuteranopia .color-filter-wrap p,
+html.color-deuteranopia .color-filter-wrap span,
+html.color-deuteranopia .color-filter-wrap li,
+html.color-tritanopia   .color-filter-wrap p,
+html.color-tritanopia   .color-filter-wrap span,
+html.color-tritanopia   .color-filter-wrap li {
+  font-weight: 600;
+}
+html.color-protanopia   .color-filter-wrap h1,
+html.color-protanopia   .color-filter-wrap h2,
+html.color-protanopia   .color-filter-wrap h3,
+html.color-deuteranopia .color-filter-wrap h1,
+html.color-deuteranopia .color-filter-wrap h2,
+html.color-deuteranopia .color-filter-wrap h3,
+html.color-tritanopia   .color-filter-wrap h1,
+html.color-tritanopia   .color-filter-wrap h2,
+html.color-tritanopia   .color-filter-wrap h3 {
+  font-weight: 800;
+  text-shadow: 0 1px 3px rgba(0,0,0,0.3);
+}
+
+/* ════════════════════════════════════════════════════════
+   MODO ESCURO
+════════════════════════════════════════════════════════ */
+html.contrast-dark {
+  --white: #0a0012;
+  --off-white: #0f0018;
+  --dark-bg: #000000;
+  --card-bg: #120020;
+  --text-dark: #f0eaff;
+  --text-body: #d0c8e8;
+  --gray-text: #a898c8;
+  --gray-light: #2a1a45;
+}
+html.contrast-dark body { background: #0a0012 !important; color: #f0eaff !important; }
+
+html.contrast-dark .navbar {
+  background: #000 !important;
+  border-bottom: 1px solid rgba(168,85,247,0.3) !important;
+}
+html.contrast-dark section,
+html.contrast-dark .comprar__card,
+html.contrast-dark .essence__faq-item,
+html.contrast-dark .auth__card,
+html.contrast-dark .pg__form-panel {
+  background: #120020 !important;
+  border-color: rgba(168,85,247,0.2) !important;
+}
+html.contrast-dark p,
+html.contrast-dark li,
+html.contrast-dark span:not(.navbar__logo-text),
+html.contrast-dark label { color: #d0c8e8 !important; }
+
+html.contrast-dark h1, html.contrast-dark h2,
+html.contrast-dark h3, html.contrast-dark h4 { color: #f0eaff !important; }
+
+html.contrast-dark input,
+html.contrast-dark select {
+  background: #0f0018 !important;
+  border-color: rgba(168,85,247,0.4) !important;
+  color: #f0eaff !important;
+}
+
+/* ════════════════════════════════════════════════════════
+   MODO CLARO
+════════════════════════════════════════════════════════ */
+html.contrast-light {
+  --dark-bg: #e8e0ff;
+  --card-bg: #ffffff;
+  --text-dark: #1a0040;
+  --text-body: #2d0060;
+  --gray-text: #4a3070;
+}
+html.contrast-light body { background: #f0ebff !important; }
+
+html.contrast-light .navbar { background: #e0d8ff !important; border-bottom: 1px solid #c0b0ee !important; }
+html.contrast-light .navbar__link,
+html.contrast-light .navbar__logo-text { color: #1a0040 !important; }
+html.contrast-light .navbar__btn--login { border-color: #4a1090 !important; color: #1a0040 !important; }
+
+/* Hero e seções escuras ficam mais claras */
+html.contrast-light .app-hero,
+html.contrast-light .app-steps,
+html.contrast-light .app-download,
+html.contrast-light .comprar__hero,
+html.contrast-light .comprar__product,
+html.contrast-light .comprar__cta-section,
+html.contrast-light .auth,
+html.contrast-light .pg {
+  background: #e8e0ff !important;
+}
+html.contrast-light .app-hero *,
+html.contrast-light .comprar__hero *,
+html.contrast-light .app-steps *,
+html.contrast-light .app-download * { color: #1a0040 !important; }
+
+html.contrast-light .comprar__hero-gradient,
+html.contrast-light .app-hero__gradient {
+  -webkit-text-fill-color: #4a1090 !important;
+}
+
+html.contrast-light h1, html.contrast-light h2,
+html.contrast-light h3, html.contrast-light h4 { color: #1a0040 !important; }
+html.contrast-light p, html.contrast-light li { color: #2d0060 !important; }
+
+html.contrast-light input,
+html.contrast-light select {
+  background: #fff !important;
+  border-color: #9060d0 !important;
+  color: #1a0040 !important;
+}
+
+/* ════════════════════════════════════════════════════════
+   TEXTO GRANDE (+25%)
+════════════════════════════════════════════════════════ */
+html.text-large p,
+html.text-large li,
+html.text-large span,
+html.text-large label,
+html.text-large a,
+html.text-large button,
+html.text-large input,
+html.text-large select,
+html.text-large .navbar__link,
+html.text-large .comprar__feature,
+html.text-large .comprar__card-tagline,
+html.text-large .app-features__card-desc,
+html.text-large .pg-label {
+  font-size: 1.25em !important;
+  line-height: 1.65 !important;
+}
+
+html.text-large h1 { font-size: clamp(40px, 6.25vw, 75px) !important; }
+html.text-large h2 { font-size: clamp(30px, 4.375vw, 55px) !important; }
+html.text-large h3 { font-size: clamp(20px, 2.75vw, 35px) !important; }
+
+/* Não afeta o painel de acessibilidade */
+html.text-large .a11y-trigger span,
+html.text-large .a11y-panel * { font-size: inherit !important; }
+
+/* ════════════════════════════════════════════════════════
+   FOCO GLOBAL — NAVEGAÇÃO POR TECLADO
+════════════════════════════════════════════════════════ */
+*:focus-visible {
+  outline: 3px solid #a855f7 !important;
+  outline-offset: 2px !important;
+  border-radius: 4px;
+}
+.navbar *:focus-visible,
+.a11y-trigger:focus-visible { outline-color: #facc15 !important; }
+button:focus:not(:focus-visible) { outline: none; }
+
+/* ════════════════════════════════════════════════════════
+   REDUCED MOTION
+════════════════════════════════════════════════════════ */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  html { scroll-behavior: auto; }
+}
+
+/* ── Responsivo ── */
+@media (max-width: 480px) {
+  .a11y-panel { right: 10px; bottom: 76px; width: calc(100vw - 20px); max-width: 340px; }
+  .a11y-trigger { right: 10px; bottom: 14px; font-size: 12px; padding: 9px 14px; }
+}
+
+
+/* ════════════════════════════════════════════════════════════════
+   MODO ESCURO — CORREÇÕES ESPECÍFICAS DE CONTRASTE
+   Problema: textos pretos/escuros invisíveis em fundos escuros
+════════════════════════════════════════════════════════════════ */
+
+/* ── Força TODOS os textos a serem claros no modo escuro ── */
+html.contrast-dark * {
+  color: #e8e0ff !important;
+}
+
+/* Exceções: elementos que têm cor de fundo como cor de texto */
+html.contrast-dark .navbar__logo-text { color: #fff !important; }
+
+/* ── Benefits: texto escuro sobre fundo claro virou invisível ── */
+html.contrast-dark .benefits {
+  background: #0f0020 !important;
+}
+html.contrast-dark .benefits__card,
+html.contrast-dark .benefits__card--right {
+  background: linear-gradient(135deg, #1e0a40 0%, #160830 50%, #1a0a38 100%) !important;
+  border: 1px solid rgba(168,85,247,0.25) !important;
+}
+html.contrast-dark .benefits__title { color: #f0eaff !important; }
+html.contrast-dark .benefits__item { color: #d4ccf0 !important; font-weight: 600 !important; }
+html.contrast-dark .benefits__bullet { color: #a855f7 !important; }
+html.contrast-dark .benefits__image-placeholder {
+  background: linear-gradient(135deg, #4a1a8a, #2a1060) !important;
+  box-shadow: 0 8px 24px rgba(168,85,247,0.3) !important;
+}
+
+/* ── Essence (Missão/Visão/Valores + FAQ): fundo e textos ── */
+html.contrast-dark .essence {
+  background: #08000f !important;
+}
+html.contrast-dark .essence__title { color: #f0eaff !important; }
+html.contrast-dark .essence__bg {
+  background: linear-gradient(135deg, #1a0040 0%, #120030 100%) !important;
+}
+html.contrast-dark .essence__card {
+  background: rgba(255,255,255,0.06) !important;
+  border-color: rgba(168,85,247,0.3) !important;
+}
+html.contrast-dark .essence__card-title { color: #fff !important; }
+html.contrast-dark .essence__card-text { color: #d4ccf0 !important; font-weight: 600 !important; }
+html.contrast-dark .essence__card-list-item { color: #d4ccf0 !important; font-weight: 600 !important; }
+
+/* FAQ no modo escuro */
+html.contrast-dark .essence__faq-title { color: #f0eaff !important; }
+html.contrast-dark .essence__faq-sub { color: #b0a8d0 !important; }
+html.contrast-dark .essence__faq-item {
+  background: #120028 !important;
+  border-color: rgba(168,85,247,0.2) !important;
+}
+html.contrast-dark .essence__faq-q-text { color: #e8e0ff !important; font-weight: 700 !important; }
+html.contrast-dark .essence__faq-answer { color: #c8c0e8 !important; font-weight: 600 !important; }
+html.contrast-dark .essence__faq-num { color: #c084fc !important; background: rgba(168,85,247,0.15) !important; }
+html.contrast-dark .essence__faq-eyebrow { color: #c084fc !important; }
+
+/* ── Community / AboutProduct e outros fundos brancos ── */
+html.contrast-dark .community,
+html.contrast-dark .about-product,
+html.contrast-dark .plans,
+html.contrast-dark .plans__card,
+html.contrast-dark .comprar__card,
+html.contrast-dark .comprar__testimonial-card,
+html.contrast-dark .essence__faq {
+  background: #0a0018 !important;
+}
+html.contrast-dark .plans__card,
+html.contrast-dark .comprar__card {
+  background: #120028 !important;
+  border-color: rgba(168,85,247,0.25) !important;
+}
+html.contrast-dark .plans__card *,
+html.contrast-dark .comprar__card * { color: #e8e0ff !important; }
+html.contrast-dark .plans__feature { color: #c8c0e8 !important; }
+html.contrast-dark .plans__plan-name { color: #f0eaff !important; }
+
+/* ── Plans seção ── */
+html.contrast-dark .comprar__plans {
+  background: #0a0018 !important;
+}
+
+/* ── Comprar hero já é escuro mas textos secundários ── */
+html.contrast-dark .comprar__hero-sub { color: #b0a8d0 !important; }
+html.contrast-dark .comprar__card-tagline { color: #a898c0 !important; }
+html.contrast-dark .comprar__feature { color: #c8c0e8 !important; }
+html.contrast-dark .comprar__feature--disabled { color: #6a6080 !important; }
+
+/* ── Aplicativo page ── */
+html.contrast-dark .app-features {
+  background: #08000f !important;
+}
+html.contrast-dark .app-features__card {
+  background: #120028 !important;
+  border-color: rgba(168,85,247,0.2) !important;
+}
+html.contrast-dark .app-features__card-title { color: #f0eaff !important; }
+html.contrast-dark .app-features__card-desc { color: #c8c0e8 !important; font-weight: 600 !important; }
+html.contrast-dark .app-video { background: #0a0018 !important; }
+html.contrast-dark .app-video__title { color: #f0eaff !important; }
+html.contrast-dark .app-video__desc { color: #b0a8d0 !important; font-weight: 600 !important; }
+html.contrast-dark .app-video__feature { color: #d0c8e8 !important; font-weight: 600 !important; }
+
+/* ── Pagamento ── */
+html.contrast-dark .pg__summary-title { color: #f0eaff !important; }
+html.contrast-dark .pg__product-name { color: #f0eaff !important; }
+html.contrast-dark .pg__total-row { color: #c8c0e8 !important; }
+html.contrast-dark .pg__total-row--main { color: #fff !important; }
+
+/* ── Auth ── */
+html.contrast-dark .auth__form-title { color: #f0eaff !important; }
+html.contrast-dark .auth__form-sub { color: #a898c0 !important; }
+
+/* ── Footer no modo escuro ── */
+html.contrast-dark footer,
+html.contrast-dark .footer {
+  background: #000000 !important;
+  border-top: 1px solid rgba(168,85,247,0.2) !important;
+}
+
+/* ════════════════════════════════════════════════════════════════
+   MODO CLARO — CORREÇÕES ESPECÍFICAS
+   Problemas: footer ilegível, Missão/Visão/Valores ilegível
+════════════════════════════════════════════════════════════════ */
+
+/* ── Footer no modo claro ── */
+html.contrast-light footer,
+html.contrast-light .footer {
+  background: #2a0060 !important;
+  border-top: none !important;
+}
+html.contrast-light .footer * { color: rgba(255,255,255,0.9) !important; }
+html.contrast-light .footer h3,
+html.contrast-light .footer h4 { color: #fff !important; }
+html.contrast-light .footer a { color: rgba(255,255,255,0.8) !important; }
+html.contrast-light .footer a:hover { color: #c084fc !important; }
+
+/* ── Essence / Missão Visão Valores no modo claro ── */
+html.contrast-light .essence {
+  background: #f0ebff !important;
+}
+html.contrast-light .essence__title { color: #1a0040 !important; }
+html.contrast-light .essence__bg {
+  background: linear-gradient(135deg, #5b21b6 0%, #4c1d95 100%) !important;
+}
+html.contrast-light .essence__card {
+  background: rgba(255,255,255,0.15) !important;
+  border: 1px solid rgba(255,255,255,0.3) !important;
+}
+html.contrast-light .essence__card-title { color: #fff !important; font-weight: 800 !important; }
+html.contrast-light .essence__card-text { color: rgba(255,255,255,0.92) !important; font-weight: 600 !important; }
+html.contrast-light .essence__card-list-item { color: rgba(255,255,255,0.92) !important; font-weight: 600 !important; }
+html.contrast-light .essence__btn {
+  background: #fff !important;
+  color: #4c1d95 !important;
+  font-weight: 800 !important;
+}
+
+/* FAQ no modo claro */
+html.contrast-light .essence__faq-title { color: #1a0040 !important; }
+html.contrast-light .essence__faq-sub { color: #3b0080 !important; }
+html.contrast-light .essence__faq-item {
+  background: #fff !important;
+  border-color: rgba(124,58,237,0.3) !important;
+}
+html.contrast-light .essence__faq-q-text { color: #1a0040 !important; font-weight: 700 !important; }
+html.contrast-light .essence__faq-answer { color: #2d0060 !important; font-weight: 600 !important; }
+html.contrast-light .essence__faq-num { color: #7c3aed !important; }
+html.contrast-light .essence__faq-eyebrow { color: #7c3aed !important; }
+
+/* ── Benefits no modo claro ── */
+html.contrast-light .benefits {
+  background: #f0ebff !important;
+}
+html.contrast-light .benefits__title { color: #1a0040 !important; }
+html.contrast-light .benefits__item { color: #2d0060 !important; font-weight: 700 !important; }
+html.contrast-light .benefits__card,
+html.contrast-light .benefits__card--right {
+  background: linear-gradient(135deg, #ddd6fe 0%, #c4b5fd 50%, #e9d5ff 100%) !important;
+  border: 1px solid rgba(124,58,237,0.2) !important;
+}
+
+/* ── Plans no modo claro ── */
+html.contrast-light .plans,
+html.contrast-light .comprar__plans {
+  background: #ede9fe !important;
+}
+html.contrast-light .plans__card,
+html.contrast-light .comprar__card {
+  background: #fff !important;
+  border-color: rgba(124,58,237,0.25) !important;
+}
+html.contrast-light .plans__plan-name,
+html.contrast-light .comprar__card-name { color: #1a0040 !important; }
+html.contrast-light .plans__feature,
+html.contrast-light .comprar__feature { color: #2d0060 !important; font-weight: 600 !important; }
+html.contrast-light .comprar__card-tagline { color: #4a2090 !important; }
+html.contrast-light .comprar__feature--disabled { color: #9880c0 !important; }
+
+/* ── Comprar testimonials no modo claro ── */
+html.contrast-light .comprar__testimonials { background: #e8e0ff !important; }
+html.contrast-light .comprar__testimonial-card {
+  background: #fff !important;
+  border-color: rgba(124,58,237,0.2) !important;
+}
+html.contrast-light .comprar__testimonial-text,
+html.contrast-light .comprar__testimonial-name,
+html.contrast-light .comprar__testimonial-role { color: #1a0040 !important; }
+
+/* ── Aplicativo modo claro ── */
+html.contrast-light .app-features {
+  background: #f0ebff !important;
+}
+html.contrast-light .app-features__card {
+  background: #fff !important;
+  border-color: rgba(124,58,237,0.2) !important;
+}
+html.contrast-light .app-features__card-title { color: #1a0040 !important; }
+html.contrast-light .app-features__card-desc { color: #2d0060 !important; font-weight: 600 !important; }
+html.contrast-light .app-video { background: #e8e0ff !important; }
+html.contrast-light .app-video__title { color: #1a0040 !important; }
+html.contrast-light .app-video__desc { color: #3b0080 !important; font-weight: 600 !important; }
+
+/* ── Community no modo claro ── */
+html.contrast-light .community { background: #f0ebff !important; }
+html.contrast-light .community * { color: #1a0040 !important; }
+
+/* Garantir que botões de gradiente mantenham texto branco em ambos os modos */
+html.contrast-dark .navbar__btn--signup,
+html.contrast-dark .plans__cta,
+html.contrast-dark .comprar__cta,
+html.contrast-dark .auth__submit,
+html.contrast-dark .pg__submit,
+html.contrast-dark .app-hero__cta--primary,
+html.contrast-light .navbar__btn--signup,
+html.contrast-light .plans__cta,
+html.contrast-light .comprar__cta,
+html.contrast-light .auth__submit,
+html.contrast-light .pg__submit {
+  color: #fff !important;
+}

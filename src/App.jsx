@@ -5,6 +5,8 @@ import Comprar from './pages/Comprar.jsx';
 import Auth from './pages/Auth.jsx';
 import Aplicativo from './pages/Aplicativo.jsx';
 import Navbar from './components/Navbar/Navbar.jsx';
+import { AccessibilityProvider } from './context/AccessibilityContext';
+import AccessibilityPanel from './components/Acessibilidade/AccessibilityPanel.jsx';
 
 function App() {
   const [page, setPage] = useState("home");
@@ -30,6 +32,10 @@ function App() {
       {page === 'comprar'    && <Comprar currentPage={page} onNavigate={handleNavigate}/>}
       {page === 'aplicativo' && <Aplicativo currentPage={page} onNavigate={handleNavigate} />}
       {page === 'auth'       && <Auth onNavigate={handleNavigate} initialMode={authMode} />}
+      
+      <AccessibilityProvider>
+        <AccessibilityPanel />
+      </AccessibilityProvider>
     </>
   );
 }

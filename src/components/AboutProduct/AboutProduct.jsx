@@ -15,23 +15,6 @@ const AboutProduct = () => {
         <div className="about__grid">
           <div className="about__card about__card--large">
             <div className="about__card-label">GPS integrado</div>
-            <div className="about__watches">
-              <div className="about__watch about__watch--beige">
-                <div className="about__watch-screen" />
-                <div className="about__watch-band-t" />
-                <div className="about__watch-band-b" />
-              </div>
-              <div className="about__watch about__watch--purple">
-                <div className="about__watch-screen" />
-                <div className="about__watch-band-t" />
-                <div className="about__watch-band-b" />
-              </div>
-              <div className="about__watch about__watch--dark">
-                <div className="about__watch-screen" />
-                <div className="about__watch-band-t" />
-                <div className="about__watch-band-b" />
-              </div>
-            </div>
           </div>
 
           <div className="about__card about__card--small">

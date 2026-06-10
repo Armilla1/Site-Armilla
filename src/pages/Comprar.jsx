@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import Hero from '../components/Hero/Hero.jsx';
+import Plans from '../components/Plans/Plans.jsx'
 import './Comprar.css';
 
 const plans = [
@@ -85,49 +87,19 @@ const faqs = [
   },
 ];
 
-const Comprar = () => {
+const Comprar = (props) => {
   const [openFaq, setOpenFaq] = useState(null);
   const [billing, setBilling] = useState('monthly');
 
   return (
     <div className="comprar">
       {/* Hero */}
-      <section className="comprar__hero">
-        <div className="comprar__hero-bg">
-          <div className="comprar__hero-orb comprar__hero-orb--1" />
-          <div className="comprar__hero-orb comprar__hero-orb--2" />
-          <div className="comprar__hero-orb comprar__hero-orb--3" />
-        </div>
-        <div className="comprar__hero-content">
-          <div className="comprar__hero-badge">🛡️ Segurança para sua família</div>
-          <h1 className="comprar__hero-title">
-            Escolha o plano<br />
-            <span className="comprar__hero-gradient">ideal para você</span>
-          </h1>
-          <p className="comprar__hero-sub">
-            Monitore, proteja e acompanhe seu filho onde estiver.<br />
-            Comece grátis e faça upgrade quando quiser.
-          </p>
+      <Hero currentPage={props.currentPage}/>
 
-          <div className="comprar__billing-toggle">
-            <button
-              className={`comprar__billing-btn ${billing === 'monthly' ? 'active' : ''}`}
-              onClick={() => setBilling('monthly')}
-            >
-              Mensal
-            </button>
-            <button
-              className={`comprar__billing-btn ${billing === 'annual' ? 'active' : ''}`}
-              onClick={() => setBilling('annual')}
-            >
-              Anual <span className="comprar__billing-save">-20%</span>
-            </button>
-          </div>
-        </div>
-      </section>
-
+      <Plans />
+      
       {/* Plans */}
-      <section className="comprar__plans">
+      {/*<section className="comprar__plans">
         <div className="comprar__plans-grid">
           {plans.map((plan) => (
             <div
@@ -175,7 +147,8 @@ const Comprar = () => {
             </div>
           ))}
         </div>
-      </section>
+      </section>*/}
+
 
       {/* Pulseira Banner */}
       <section className="comprar__product">

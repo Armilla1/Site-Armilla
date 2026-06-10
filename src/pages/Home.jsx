@@ -8,10 +8,10 @@ import Milla from '../components/Milla/Milla.jsx';
 import Essence from '../components/Essence/Essence.jsx';
 import Footer from '../components/Footer/Footer.jsx';
 
-const Home = ({ onNavigate }) => {
+const Home = ( props ) => {
   return (
     <>
-      <Hero />
+      <Hero currentPage={props.currentPage}/>
       <AboutProduct />
       <Community />
       <Benefits />

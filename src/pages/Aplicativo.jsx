@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import './Aplicativo.css';
 import Hero from '../components/Hero/Hero.jsx';
+import Footer from '../components/Footer/Footer.jsx';
 
 const screens = [
   {
@@ -184,6 +185,7 @@ const Aplicativo = ( props ) => {
           </button>
         </div>
       </section>
+      <Footer />
     </div>
   );
 };

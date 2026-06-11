@@ -13,8 +13,8 @@ const Navbar = ({ onNavigate, currentPage }) => {
 
   const navLinks = [
     { label: 'Home',        page: 'home',        href: '#home' },
-    { label: 'Informações', page: 'home',        href: '#informacoes' },
-    { label: 'Sobre nós',   page: 'home',        href: '#sobre' },
+    { label: 'Informações', page: 'informacoes', href: null },
+    { label: 'Sobre nós',   page: 'sobre-nos',   href: null },
     { label: 'Comprar',     page: 'comprar',     href: null },
     { label: 'Aplicativo',  page: 'aplicativo',  href: null },
   ];

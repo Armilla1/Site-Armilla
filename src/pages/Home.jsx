@@ -12,7 +12,7 @@ const Home = ( props ) => {
   return (
     <>
       <Hero currentPage={props.currentPage}/>
-      <AboutProduct />
+      <AboutProduct currentPage={props.currentPage}/>
       <Community />
       <Benefits />
       <Plans />

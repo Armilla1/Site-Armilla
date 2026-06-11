@@ -1,7 +1,12 @@
 import React from 'react';
 import './AboutProduct.css';
+import pulseSafeCores from "../../assets/pulseSafeCores.png"
+import pulseSafeCores2 from "../../assets/pulseSafeCores2.png"
+import pulseSafeBraco from "../../assets/pulsesafeBraco.png"
+import menina1 from "../../assets/menina1.png"
+import meninoNina from "../../assets/meninoNina.png"
 
-const AboutProduct = () => {
+const AboutProduct = (props) => {
   return (
     <section className="about" id="informacoes">
       <div className="about__container">
@@ -14,29 +19,35 @@ const AboutProduct = () => {
 
         <div className="about__grid">
           <div className="about__card about__card--large">
-            <div className="about__card-label">GPS integrado</div>
-          </div>
-
-          <div className="about__card about__card--small">
-            <div className="about__card-label">Design Confortável</div>
-            <div className="about__wrist">
-              <div className="about__wrist-arm" />
-              <div className="about__wrist-watch">
-                <div className="about__watch about__watch--nude">
-                  <div className="about__watch-screen" />
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className="about__card about__card--small">
+            
+            {props.currentPage === "home" && 
+            <>
             <div className="about__card-label">Diversas Cores</div>
-            <div className="about__colors-grid">
-              <div className="about__watch about__watch--blue"><div className="about__watch-screen" /></div>
-              <div className="about__watch about__watch--yellow"><div className="about__watch-screen" /></div>
-              <div className="about__watch about__watch--gray"><div className="about__watch-screen" /></div>
-              <div className="about__watch about__watch--teal"><div className="about__watch-screen" /></div>
-            </div>
+            <img src={pulseSafeCores} alt=""/>
+            </>
+            }
+            {props.currentPage === "informacoes" && <img src={pulseSafeCores} alt=""/>}
+          </div>
+
+          <div className="about__card about__card--small">
+            {props.currentPage === "home" && 
+            <>
+            <div className="about__card-label">GPS integrado</div>
+            <img src={pulseSafeCores2} alt=""/>
+            </>
+            }
+            {props.currentPage === "informacoes" && <img src={menina1} alt=""/>}
+            
+          </div>
+
+          <div className="about__card about__card--small">
+            {props.currentPage === "home" && 
+            <>
+            <div className="about__card-label">Design Confortável</div>
+            <img src={pulseSafeBraco} alt=""/>
+            </>
+            }
+            {props.currentPage === "informacoes" && <img src={meninoNina} alt=""/>}
           </div>
         </div>
       </div>

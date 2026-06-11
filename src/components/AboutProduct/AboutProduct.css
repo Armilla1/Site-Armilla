@@ -57,9 +57,15 @@
   position: relative;
   border-radius: var(--radius-lg);
   overflow: hidden;
-  background: #2a1a1a;
-  padding: 24px;
 }
+
+
+.about__card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
 
 .about__card--large {
   grid-column: 1 / -1;
@@ -78,6 +84,9 @@
 }
 
 .about__card-label {
+  margin-top: 8px;
+  margin-left: 10px;
+  position: absolute;
   font-family: var(--font-display);
   font-weight: 700;
   font-size: 16px;
@@ -85,7 +94,6 @@
   background: rgba(0,0,0,0.35);
   padding: 6px 16px;
   border-radius: 20px;
-  margin-bottom: 24px;
   align-self: flex-start;
 }
 

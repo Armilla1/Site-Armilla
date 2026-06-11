@@ -39,9 +39,8 @@
 
 .benefits__image-placeholder {
   flex-shrink: 0;
-  width: 120px;
-  height: 120px;
-  border-radius: 50%;
+  width: 180px;
+  border-radius: 50% 5%;
   background: linear-gradient(135deg, #93c5fd, #a78bfa);
   display: flex;
   align-items: center;
@@ -56,14 +55,6 @@
   display: flex;
   align-items: flex-end;
   justify-content: center;
-}
-
-.benefits__img-silhouette {
-  width: 60px;
-  height: 80px;
-  background: rgba(255, 255, 255, 0.5);
-  border-radius: 30px 30px 0 0;
-  position: relative;
 }
 
 .benefits__img-silhouette::before {
@@ -99,11 +90,12 @@
   display: flex;
   align-items: flex-start;
   gap: 10px;
-  font-size: 15px;
+  font-size: 20px;
   font-weight: 600;
   color: var(--purple-dark);
   padding: 6px 0;
   line-height: 1.4;
+  justify-content: center;
 }
 
 .benefits__bullet {

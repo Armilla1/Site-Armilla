@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import './index.css';
 import Home from './pages/Home';
+import PulseSafe from './pages/PulseSafe.jsx';
 import Comprar from './pages/Comprar.jsx';
 import Auth from './pages/Auth.jsx';
+import SobreNos from './pages/SobreNos.jsx'
 import Aplicativo from './pages/Aplicativo.jsx';
 import Navbar from './components/Navbar/Navbar.jsx';
 import { AccessibilityProvider } from './context/AccessibilityContext';
@@ -29,6 +31,8 @@ function App() {
       {console.log(`${page}`)}
       {showNavbar && <Navbar currentPage={page} onNavigate={handleNavigate} />}
       {page === 'home'       && <Home currentPage={page}/>}
+      {page === 'informacoes'&& <PulseSafe currentPage={page} onNavigate={handleNavigate}/>}
+      {page === 'sobre-nos'  && <SobreNos currentPage={page} onNavigate={handleNavigate}/>}
       {page === 'comprar'    && <Comprar currentPage={page} onNavigate={handleNavigate}/>}
       {page === 'aplicativo' && <Aplicativo currentPage={page} onNavigate={handleNavigate} />}
       {page === 'auth'       && <Auth onNavigate={handleNavigate} initialMode={authMode} />}

@@ -1,5 +1,7 @@
 import React from 'react';
 import './Benefits.css';
+import menina2 from "../../assets/menina2.png"
+import menino1 from "../../assets/menino1.png"
 
 const safetyBenefits = [
   'Mais segurança para crianças',
@@ -29,7 +31,7 @@ const Benefits = () => {
           <div className="benefits__card benefits__card--left">
             <div className="benefits__image-placeholder benefits__image--child">
               <div className="benefits__img-circle">
-                <div className="benefits__img-silhouette" />
+                <img src={menina2} alt="" />
               </div>
             </div>
             <ul className="benefits__list">
@@ -53,7 +55,7 @@ const Benefits = () => {
             </ul>
             <div className="benefits__image-placeholder benefits__image--kid">
               <div className="benefits__img-circle">
-                <div className="benefits__img-silhouette benefits__img-silhouette--small" />
+                <img src={menino1} alt="" />
               </div>
             </div>
           </div>

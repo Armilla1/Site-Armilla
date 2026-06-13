@@ -1,0 +1,535 @@
+/* ── NovaSenha.css ───────────────────────────────────────────────────────────
+   Segue o mesmo sistema de design do Auth.css:
+   - variáveis CSS de index.css (--dark-bg, --font-body, --font-display, etc.)
+   - prefixo BEM: new-password__*
+   - grid de 2 colunas (card + painel lateral)
+   - responsivo: painel some em telas < 900px
+────────────────────────────────────────────────────────────────────────────── */
+
+/* Layout raiz */
+.new-password {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 1fr 420px;
+  position: relative;
+  background: var(--dark-bg);
+  overflow: hidden;
+}
+
+/* ── Fundo ─────────────────────────────────────────────────────────────────── */
+.new-password__bg {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.new-password__orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+}
+
+.new-password__orb--1 {
+  width: 500px; height: 500px;
+  background: radial-gradient(circle, rgba(100, 14, 134, 0.6) 0%, transparent 70%);
+  top: -200px; left: -100px;
+}
+
+.new-password__orb--2 {
+  width: 400px; height: 400px;
+  background: radial-gradient(circle, rgba(17, 29, 150, 0.5) 0%, transparent 70%);
+  bottom: -100px; left: 30%;
+}
+
+.new-password__orb--3 {
+  width: 300px; height: 300px;
+  background: radial-gradient(circle, rgba(25, 167, 255, 0.3) 0%, transparent 70%);
+  top: 20%; right: 420px;
+}
+
+.new-password__grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+/* ── Botão voltar ──────────────────────────────────────────────────────────── */
+.new-password__back {
+  position: fixed;
+  top: 20px;
+  left: 24px;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.15);
+  color: rgba(255,255,255,0.8);
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 13px;
+  padding: 8px 16px;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.new-password__back:hover {
+  background: rgba(255,255,255,0.14);
+  color: #fff;
+}
+
+/* ── Card ──────────────────────────────────────────────────────────────────── */
+.new-password__card {
+  grid-column: 1;
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 80px 40px 60px;
+  min-height: 100vh;
+}
+
+/* ── Logo ──────────────────────────────────────────────────────────────────── */
+.new-password__logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 36px;
+  cursor: pointer;
+}
+
+.new-password__logo-icon {
+  width: 40px;
+  height: 40px;
+}
+
+.new-password__logo-text {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 20px;
+  color: var(--white);
+  letter-spacing: 2px;
+}
+
+/* ── Cabeçalho ─────────────────────────────────────────────────────────────── */
+.new-password__header {
+  text-align: center;
+  margin-bottom: 32px;
+  max-width: 440px;
+}
+
+.new-password__icon-wrap {
+  width: 72px;
+  height: 72px;
+  background: linear-gradient(135deg, rgba(168, 85, 247, 0.15), rgba(56, 189, 248, 0.1));
+  border: 1px solid rgba(168, 85, 247, 0.3);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 20px;
+}
+
+.new-password__title {
+  font-family: var(--font-display);
+  font-size: 24px;
+  font-weight: 800;
+  color: var(--white);
+  margin-bottom: 10px;
+}
+
+.new-password__subtitle {
+  font-size: 14px;
+  color: rgba(255,255,255,0.5);
+  line-height: 1.6;
+}
+
+/* ── Campos ────────────────────────────────────────────────────────────────── */
+.new-password__field {
+  width: 100%;
+  max-width: 440px;
+  margin-bottom: 20px;
+}
+
+.new-password__label {
+  display: block;
+  font-size: 13px;
+  font-weight: 700;
+  color: rgba(255,255,255,0.75);
+  margin-bottom: 6px;
+  letter-spacing: 0.3px;
+}
+
+.new-password__input-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.new-password__input-icon {
+  position: absolute;
+  left: 14px;
+  width: 18px;
+  height: 18px;
+  color: rgba(255,255,255,0.35);
+  pointer-events: none;
+}
+
+.new-password__input {
+  width: 100%;
+  background: rgba(255,255,255,0.06);
+  border: 1.5px solid rgba(255,255,255,0.12);
+  border-radius: 12px;
+  padding: 13px 44px 13px 42px;
+  font-family: var(--font-body);
+  font-size: 14px;
+  color: var(--white);
+  transition: border-color 0.2s ease, background 0.2s ease;
+  outline: none;
+}
+
+.new-password__input::placeholder { color: rgba(255,255,255,0.28); }
+
+.new-password__input:focus {
+  border-color: #a855f7;
+  background: rgba(168, 85, 247, 0.08);
+}
+
+/* Estado: senha correta */
+.new-password__input--ok {
+  border-color: #4ade80 !important;
+  background: rgba(74, 222, 128, 0.06) !important;
+}
+
+/* Estado: senha errada */
+.new-password__input--err {
+  border-color: #f87171 !important;
+  background: rgba(248, 113, 113, 0.06) !important;
+}
+
+.new-password__toggle {
+  position: absolute;
+  right: 14px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: rgba(255,255,255,0.35);
+  display: flex;
+  align-items: center;
+  transition: color 0.2s;
+}
+
+.new-password__toggle:hover { color: rgba(255,255,255,0.7); }
+
+/* ── Barra de força ────────────────────────────────────────────────────────── */
+.new-password__strength {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.new-password__strength-bar {
+  display: flex;
+  gap: 4px;
+  flex: 1;
+}
+
+.new-password__strength-seg {
+  flex: 1;
+  height: 4px;
+  border-radius: 2px;
+  transition: background 0.3s ease;
+}
+
+.new-password__strength-label {
+  font-size: 12px;
+  font-weight: 700;
+  min-width: 52px;
+  text-align: right;
+  transition: color 0.3s;
+}
+
+/* ── Checklist de regras ───────────────────────────────────────────────────── */
+.new-password__rules {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 12px;
+}
+
+.new-password__rule {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  color: rgba(255,255,255,0.4);
+  transition: color 0.2s;
+}
+
+.new-password__rule--ok {
+  color: #4ade80;
+}
+
+.new-password__rule-icon {
+  font-size: 13px;
+  width: 16px;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+/* ── Feedback de correspondência ───────────────────────────────────────────── */
+.new-password__match {
+  font-size: 12px;
+  font-weight: 600;
+  margin-top: 6px;
+}
+
+.new-password__match--ok  { color: #4ade80; }
+.new-password__match--err { color: #f87171; }
+
+/* ── Mensagem de erro ──────────────────────────────────────────────────────── */
+.new-password__error {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(248, 113, 113, 0.1);
+  border: 1px solid rgba(248, 113, 113, 0.3);
+  border-radius: 10px;
+  padding: 10px 14px;
+  font-size: 13px;
+  color: #fca5a5;
+  margin-bottom: 16px;
+  max-width: 440px;
+  width: 100%;
+  animation: np-shake 0.3s ease;
+}
+
+@keyframes np-shake {
+  0%, 100% { transform: translateX(0); }
+  20%       { transform: translateX(-6px); }
+  40%       { transform: translateX(6px); }
+  60%       { transform: translateX(-4px); }
+  80%       { transform: translateX(4px); }
+}
+
+/* ── Botão enviar ──────────────────────────────────────────────────────────── */
+.new-password__submit {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  max-width: 440px;
+  padding: 15px;
+  background: linear-gradient(135deg, #A121C5, #111D96);
+  color: #fff;
+  font-family: var(--font-body);
+  font-weight: 800;
+  font-size: 15px;
+  border-radius: 14px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.22s ease;
+  letter-spacing: 0.3px;
+}
+
+.new-password__submit:hover:not(:disabled) {
+  opacity: 0.88;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 28px rgba(161, 33, 197, 0.45);
+}
+
+.new-password__submit:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.new-password__submit--loading {
+  pointer-events: none;
+}
+
+/* Spinner */
+.new-password__spinner {
+  width: 18px;
+  height: 18px;
+  border: 2px solid rgba(255,255,255,0.3);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: np-spin 0.7s linear infinite;
+  flex-shrink: 0;
+}
+
+@keyframes np-spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ── Tela de sucesso ───────────────────────────────────────────────────────── */
+.new-password__success {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  animation: np-fade-in 0.5s ease;
+}
+
+@keyframes np-fade-in {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.new-password__success-icon {
+  font-size: 64px;
+  margin-bottom: 24px;
+}
+
+.new-password__success-title {
+  font-family: var(--font-display);
+  font-size: 26px;
+  font-weight: 800;
+  color: var(--white);
+  margin-bottom: 12px;
+}
+
+.new-password__success-text {
+  font-size: 14px;
+  color: rgba(255,255,255,0.5);
+  line-height: 1.6;
+  margin-bottom: 28px;
+}
+
+.new-password__success-loader {
+  width: 200px;
+  height: 4px;
+  background: rgba(255,255,255,0.1);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.new-password__success-loader::after {
+  content: '';
+  display: block;
+  height: 100%;
+  background: linear-gradient(90deg, #a855f7, #38bdf8);
+  border-radius: 2px;
+  animation: np-progress 2.5s linear forwards;
+}
+
+@keyframes np-progress {
+  from { width: 0; }
+  to   { width: 100%; }
+}
+
+/* ── Painel lateral ────────────────────────────────────────────────────────── */
+.new-password__panel {
+  grid-column: 2;
+  background: linear-gradient(160deg, #1a0035 0%, #0d0020 40%, #0a0018 100%);
+  border-left: 1px solid rgba(255,255,255,0.06);
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 40px;
+  overflow: hidden;
+}
+
+.new-password__panel::before {
+  content: '';
+  position: absolute;
+  top: -100px; right: -100px;
+  width: 400px; height: 400px;
+  background: radial-gradient(circle, rgba(161, 33, 197, 0.25) 0%, transparent 70%);
+  border-radius: 50%;
+}
+
+.new-password__panel::after {
+  content: '';
+  position: absolute;
+  bottom: -80px; left: -60px;
+  width: 300px; height: 300px;
+  background: radial-gradient(circle, rgba(25, 167, 255, 0.15) 0%, transparent 70%);
+  border-radius: 50%;
+}
+
+.new-password__panel-content {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+}
+
+.new-password__panel-icon {
+  font-size: 52px;
+  margin-bottom: 24px;
+  display: block;
+}
+
+.new-password__panel-title {
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--white);
+  margin-bottom: 14px;
+  line-height: 1.3;
+}
+
+.new-password__panel-text {
+  font-size: 14px;
+  color: rgba(255,255,255,0.5);
+  line-height: 1.7;
+  margin-bottom: 32px;
+}
+
+.new-password__panel-tips {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  text-align: left;
+}
+
+.new-password__panel-tips li {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 12px;
+  padding: 14px 16px;
+  font-size: 13px;
+  color: rgba(255,255,255,0.55);
+  line-height: 1.5;
+}
+
+.new-password__panel-tip-num {
+  font-family: var(--font-display);
+  font-size: 15px;
+  font-weight: 800;
+  background: linear-gradient(135deg, #a855f7, #38bdf8);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  flex-shrink: 0;
+}
+
+/* ── Responsivo ────────────────────────────────────────────────────────────── */
+@media (max-width: 900px) {
+  .new-password {
+    grid-template-columns: 1fr;
+  }
+
+  .new-password__panel {
+    display: none;
+  }
+
+  .new-password__card {
+    padding: 80px 24px 40px;
+  }
+}

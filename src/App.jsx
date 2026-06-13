@@ -9,6 +9,8 @@ import Aplicativo from './pages/Aplicativo.jsx';
 import Navbar from './components/Navbar/Navbar.jsx';
 import { AccessibilityProvider } from './context/AccessibilityContext';
 import AccessibilityPanel from './components/Acessibilidade/AccessibilityPanel.jsx';
+import ChaveDeRecuperacao from './pages/ChaveDeRecuperacao';
+import NovaSenha from './pages/NovaSenha';
 
 function App() {
   const [page, setPage] = useState("home");
@@ -36,6 +38,8 @@ function App() {
       {page === 'comprar'    && <Comprar currentPage={page} onNavigate={handleNavigate}/>}
       {page === 'aplicativo' && <Aplicativo currentPage={page} onNavigate={handleNavigate} />}
       {page === 'auth'       && <Auth onNavigate={handleNavigate} initialMode={authMode} />}
+      {page === 'chave-de-recuperacao' && (<ChaveDeRecuperacao onNavigate={handleNavigate} userEmail="teste@email.com" />)}
+      {page === 'nova-senha' && (<NovaSenha onNavigate={handleNavigate}/>)}
       
       <AccessibilityProvider>
         <AccessibilityPanel />

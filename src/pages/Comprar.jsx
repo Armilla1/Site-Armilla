@@ -96,6 +96,70 @@ const Comprar = (props) => {
       {/* Hero */}
       <Hero currentPage={props.currentPage}/>
 
+      {/* Comprar */}
+
+        <div className="comprar-product">
+
+          {/* Imagem */}
+          <div className="comprar-product__image-wrap">
+            <img
+              src="/assets/pulsesafe-bracelets.png"
+              alt="Pulseira inteligente PulseSafe em várias cores"
+              className="comprar-product__image"
+            />
+          </div>
+
+          {/* Detalhes */}
+          <div className="comprar-product__details">
+            <h1 className="comprar-product__title">
+              Pulseira inteligente - PulseSafe
+            </h1>
+
+            <div className="comprar-product__price-row">
+              <span className="comprar-product__price">R$150,00</span>
+
+              <div className="comprar-product__colors-wrap">
+                <span className="comprar-product__colors-label">Cores</span>
+                <div className="comprar-product__colors">
+                  {colors.map((color) => (
+                    <button
+                      key={color.id}
+                      className={`comprar-color-btn ${selectedColor === color.id ? "comprar-color-btn--active" : ""}`}
+                      style={{ backgroundColor: color.hex }}
+                      aria-label={color.label}
+                      title={color.label}
+                      onClick={() => setSelectedColor(color.id)}
+                    />
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            <div className="comprar-product__qty-wrap">
+              <label htmlFor="qty" className="comprar-product__qty-label">
+                Quantidade
+              </label>
+              <div className="comprar-product__qty-select-wrap">
+                <select
+                  id="qty"
+                  className="comprar-product__qty-select"
+                  value={quantity}
+                  onChange={(e) => setQuantity(Number(e.target.value))}
+                >
+                  {[1, 2, 3, 4, 5].map((n) => (
+                    <option key={n} value={n}>{n}</option>
+                  ))}
+                </select>
+              </div>
+            </div>
+
+            <button className="comprar-btn" onClick={handleBuy}>
+              Comprar
+            </button>
+          </div>
+
+        </div>
+
       <Plans />
       
       {/* Plans */}

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import './Auth.css';
 
 const Auth = ({ onNavigate, initialMode = 'login' }) => {
@@ -282,7 +282,9 @@ const Auth = ({ onNavigate, initialMode = 'login' }) => {
               </div>
             </div>
 
-            <button className="auth__submit">
+
+             {/* retirar o onclick nessa parte, feita para testes*/} 
+            <button className="auth__submit" onClick={() => onNavigate('chave-de-recuperacao')}> 
               <span>Enviar link de recuperação</span>
               <svg viewBox="0 0 20 20" fill="none" width="18" height="18">
                 <path d="M4 10h12M11 5l5 5-5 5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
@@ -291,6 +293,8 @@ const Auth = ({ onNavigate, initialMode = 'login' }) => {
           </div>
         )}
       </div>
+
+      
 
       {/* Decorative side panel (desktop) */}
       <div className="auth__panel">

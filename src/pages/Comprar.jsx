@@ -1,7 +1,15 @@
 import React, { useState } from 'react';
-import Hero from '../components/Hero/Hero.jsx';
-import Plans from '../components/Plans/Plans.jsx'
 import './Comprar.css';
+import white from "../assets/pulsesafe-branco.png"
+import black from  "../assets/pulsesafe-preto.png"
+import pink from "../assets/pulsesafe-rosa.png"
+import blue from "../assets/pulsesafe-azul.png"
+import purple from "../assets/pulsesafe-roxo.png"
+import yellow from "../assets/pulsesafe-amarelo.png"
+
+const colorImages = {
+  white, black, pink, blue, purple, yellow
+};
 
 const plans = [
   {
@@ -87,83 +95,127 @@ const faqs = [
   },
 ];
 
-const Comprar = (props) => {
+const Comprar = () => {
   const [openFaq, setOpenFaq] = useState(null);
   const [billing, setBilling] = useState('monthly');
+  const [productColor, setProductColor] = useState('purple');
+  const [productQty, setProductQty]     = useState(1);
 
   return (
     <div className="comprar">
-      {/* Hero */}
-      <Hero currentPage={props.currentPage}/>
+      {/* Pulseira Banner */}
+    <section className="comprar__product">
+      <div className="comprar__product-inner">
 
-      {/* Comprar */}
-
-        <div className="comprar-product">
-
-          {/* Imagem */}
-          <div className="comprar-product__image-wrap">
-            <img
-              src="/assets/pulsesafe-bracelets.png"
-              alt="Pulseira inteligente PulseSafe em várias cores"
-              className="comprar-product__image"
-            />
-          </div>
-
-          {/* Detalhes */}
-          <div className="comprar-product__details">
-            <h1 className="comprar-product__title">
-              Pulseira inteligente - PulseSafe
-            </h1>
-
-            <div className="comprar-product__price-row">
-              <span className="comprar-product__price">R$150,00</span>
-
-              <div className="comprar-product__colors-wrap">
-                <span className="comprar-product__colors-label">Cores</span>
-                <div className="comprar-product__colors">
-                  {colors.map((color) => (
-                    <button
-                      key={color.id}
-                      className={`comprar-color-btn ${selectedColor === color.id ? "comprar-color-btn--active" : ""}`}
-                      style={{ backgroundColor: color.hex }}
-                      aria-label={color.label}
-                      title={color.label}
-                      onClick={() => setSelectedColor(color.id)}
-                    />
-                  ))}
-                </div>
-              </div>
-            </div>
-
-            <div className="comprar-product__qty-wrap">
-              <label htmlFor="qty" className="comprar-product__qty-label">
-                Quantidade
-              </label>
-              <div className="comprar-product__qty-select-wrap">
-                <select
-                  id="qty"
-                  className="comprar-product__qty-select"
-                  value={quantity}
-                  onChange={(e) => setQuantity(Number(e.target.value))}
-                >
-                  {[1, 2, 3, 4, 5].map((n) => (
-                    <option key={n} value={n}>{n}</option>
-                  ))}
-                </select>
-              </div>
-            </div>
-
-            <button className="comprar-btn" onClick={handleBuy}>
-              Comprar
-            </button>
-          </div>
-
+        {/* Imagem */}
+        <div className="comprar__product-image-wrap">
+          {/*}<img
+            src="/assets/pulsesafe-bracelets.png"
+            alt="Pulseira inteligente PulseSafe em várias cores"
+            className="comprar__product-image"
+          />{*/}
+          <img
+          src={colorImages[productColor]}
+          alt="Pulseira inteligente PulseSafe"
+          className="comprar__product-image"
+          />
         </div>
 
-      <Plans />
-      
+        {/* Detalhes */}
+        <div className="comprar__product-text">
+          <h2 className="comprar__product-title">
+            <span className="comprar__">
+              Pulseira inteligente PulseSafe
+            </span>
+          </h2>
+
+          <div className="comprar__product-price-row">
+            <span className="comprar__product-price">
+              R${(150 * productQty).toFixed(2).replace(".", ",")}
+            </span>
+
+            <div className="comprar__product-colors-wrap">
+              <span className="comprar__product-colors-label">Cores</span>
+              <div className="comprar__product-colors">
+                {[
+                  { id: "white",  hex: "#E8E8F0", label: "Branco"  },
+                  { id: "black",  hex: "#2D2D3A", label: "Preto"   },
+                  { id: "pink",   hex: "#F4A7B9", label: "Rosa"    },
+                  { id: "blue",   hex: "#4B9FE1", label: "Azul"    },
+                  { id: "purple", hex: "#5B2D8E", label: "Roxo"    },
+                  { id: "yellow", hex: "#D4B84A", label: "Amarelo" },
+                ].map((color) => (
+                  <button
+                    key={color.id}
+                    className={`comprar__color-btn ${productColor === color.id ? "comprar__color-btn--active" : ""}`}
+                    style={{ backgroundColor: color.hex }}
+                    aria-label={color.label}
+                    title={color.label}
+                    onClick={() => setProductColor(color.id)}
+                  />
+                ))}
+              </div>
+            </div>
+          </div>
+
+          <div className="comprar__product-qty-wrap">
+            <label className="comprar__product-qty-label">Quantidade</label>
+            <div className="comprar__product-qty-select-wrap">
+              <select
+                className="comprar__product-qty-select"
+                value={productQty}
+                onChange={(e) => setProductQty(Number(e.target.value))}
+              >
+                {[1, 2, 3, 4, 5].map((n) => (
+                  <option key={n} value={n}>{n}</option>
+                ))}
+              </select>
+            </div>
+          </div>
+
+          <button className="comprar__product-btn">Comprar</button>
+        </div>
+
+      </div>
+    </section>
+
+      {/* Hero */}
+      <section className="comprar__hero">
+        <div className="comprar__hero-bg">
+          <div className="comprar__hero-orb comprar__hero-orb--1" />
+          <div className="comprar__hero-orb comprar__hero-orb--2" />
+          <div className="comprar__hero-orb comprar__hero-orb--3" />
+        </div>
+        <div className="comprar__hero-content">
+          <div className="comprar__hero-badge">🛡️ Segurança para sua família</div>
+          <h1 className="comprar__hero-title">
+            Escolha o plano<br />
+            <span className="comprar__hero-gradient">ideal para você</span>
+          </h1>
+          <p className="comprar__hero-sub">
+            Monitore, proteja e acompanhe seu filho onde estiver.<br />
+            Comece grátis e faça upgrade quando quiser.
+          </p>
+
+          <div className="comprar__billing-toggle">
+            <button
+              className={`comprar__billing-btn ${billing === 'monthly' ? 'active' : ''}`}
+              onClick={() => setBilling('monthly')}
+            >
+              Mensal
+            </button>
+            <button
+              className={`comprar__billing-btn ${billing === 'annual' ? 'active' : ''}`}
+              onClick={() => setBilling('annual')}
+            >
+              Anual <span className="comprar__billing-save">-20%</span>
+            </button>
+          </div>
+        </div>
+      </section>
+
       {/* Plans */}
-      {/*<section className="comprar__plans">
+      <section className="comprar__plans">
         <div className="comprar__plans-grid">
           {plans.map((plan) => (
             <div
@@ -211,8 +263,7 @@ const Comprar = (props) => {
             </div>
           ))}
         </div>
-      </section>*/}
-
+      </section>
 
       {/* Pulseira Banner */}
       <section className="comprar__product">

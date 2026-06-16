@@ -293,7 +293,7 @@
 
 /* ── Product Banner ── */
 .comprar__product {
-  background: var(--dark-bg);
+  background: var(--white-light);
   padding: 80px 24px;
   overflow: hidden;
 }
@@ -460,6 +460,116 @@
   color: var(--text-dark);
   text-align: center;
   margin-bottom: 48px;
+}
+
+.comprar__product-inner {
+  display: flex;
+  gap: 56px;
+  align-items: center;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 64px 24px;
+}
+
+.comprar__product-image-wrap {
+  background: linear-gradient(145deg, #c8e8ff 0%, #dceeff 100%);
+  border-radius: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.comprar__product-image {
+  width: 100%;
+  max-width: 500px;
+  object-fit: contain;
+  border-radius: 12px;
+}
+
+.comprar__product-price-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 40px;
+  margin-bottom: 24px;
+}
+
+.comprar__product-price {
+  font-size: 2.2rem;
+  font-weight: 800;
+  color: #5b2d8e;
+}
+
+.comprar__product-colors-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.comprar__product-colors-label {
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-align: center;
+}
+
+.comprar__product-colors {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+}
+
+.comprar__color-btn {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 2.5px solid transparent;
+  cursor: pointer;
+  transition: transform 0.15s ease, border-color 0.15s ease;
+}
+
+.comprar__color-btn--active {
+  border-color: #5b2d8e;
+  box-shadow: 0 0 0 3px rgba(91, 45, 142, 0.25);
+  transform: scale(1.15);
+}
+
+.comprar__product-qty-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 28px;
+}
+
+.comprar__product-qty-label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #444466;
+}
+
+.comprar__product-qty-select-wrap {
+  position: relative;
+  display: inline-block;
+}
+
+.comprar__product-qty-select {
+  appearance: none;
+  border: none;
+  border-bottom: 2px solid #ccccdd;
+  background: transparent;
+  font-size: 1rem;
+  font-weight: 600;
+  padding: 6px 32px 6px 4px;
+  cursor: pointer;
+  min-width: 80px;
+}
+
+.comprar__product-qty-select-wrap::after {
+  content: "▾";
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  color: #5b2d8e;
 }
 
 .comprar__testimonials-grid {

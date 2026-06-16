@@ -1,40 +1,54 @@
-import React from 'react';
-import './SobreNos.css';
-import Footer from '../components/Footer/Footer.jsx';
+import React from 'react'
+import './SobreNos.css'
+import Essence from '../components/Essence/Essence.jsx'
+import Community from "../components/Community/Community.jsx"
+import Footer from '../components/Footer/Footer.jsx'
+import logo from "../assets/logoENome.png"
+import cainanImage from '../assets/team/cainan.png'
+import brunaImage from '../assets/team/bruna.png'
+import graziImage from '../assets/team/grazi.png'
+import giovannaImage from '../assets/team/giovanna.png'
+import brenoImage from '../assets/team/breno.png'
+import gustavoImage from '../assets/team/gustavo.png'
+import samuelImage from '../assets/team/samuel.png'
+import millaImage from '../assets/team/milla.png'
+import criancas from '../assets/MeninoNina2.png'
+
 
 const teamMembers = [
-  { name: 'Bruna Lopes',       role: 'Product Owner',  photo: '/assets/team/bruna.png',    color: 'purple' },
-  { name: 'Cainan Aparecido',  role: 'Scrum Master',   photo: '/assets/team/cainan.png',   color: 'blue'   },
-  { name: 'Gustavo Henrique',  role: 'Financeiro',     photo: '/assets/team/gustavo.png',  color: 'blue'   },
-  { name: 'Grazielly Oliveira',role: 'Marketing',      photo: '/assets/team/grazielly.png',color: 'purple' },
-  { name: 'Giovanna Karolline',role: 'Desenvolvedora', photo: '/assets/team/giovanna.png', color: 'purple' },
-  { name: 'Samuel Pacheco',    role: 'Desenvolvedor',  photo: '/assets/team/samuel.png',   color: 'blue'   },
-  { name: 'Breno Bueno',       role: 'Desenvolvedor',  photo: '/assets/team/breno.png',    color: 'purple' },
-  { name: 'Milla',             role: 'Mascote',        photo: '/assets/team/milla.png',    color: 'blue'   },
+  { name: 'Bruna Lopes',       role: 'Product Owner',  photo: brunaImage,    color: 'purple' },
+  { name: 'Cainan Aparecido',  role: 'Scrum Master',   photo: cainanImage,   color: 'blue'   },
+  { name: 'Gustavo Henrique',  role: 'Financeiro',     photo: gustavoImage,  color: 'blue'   },
+  { name: 'Grazielly Oliveira',role: 'Marketing',      photo: graziImage,    color: 'purple' },
+  { name: 'Giovanna Karolline',role: 'Desenvolvedora', photo: giovannaImage, color: 'purple'   },
+  { name: 'Samuel Pacheco',    role: 'Desenvolvedor',  photo: samuelImage,   color: 'blue' },
+  { name: 'Breno Bueno',       role: 'Desenvolvedor',  photo: brenoImage,    color: 'blue'   },
+  { name: 'Milla',             role: 'Mascote',        photo: millaImage,    color: 'purple' },
 ];
 
 const SobreNos = ({ onNavigate }) => {
   return (
     <div className="sobre">
 
+      <img src="../assets/team/bruna.png" alt="" />
+
       {/* ── Seção 1: Hero ── */}
       <section className="sobre__hero">
         <div className="sobre__hero-overlay" />
-        <div className="sobre__hero-content">
-          <h1 className="sobre__hero-title">Sobre Nós</h1>
-        </div>
+
         <div className="sobre__hero-brand">
           <img
-            src="/assets/armilla-logo.png"
+            src={logo}
             alt="Logo Armilla"
             className="sobre__hero-logo"
           />
-          <span className="sobre__hero-brand-name">ARMILLA</span>
           <p className="sobre__hero-slogan">
             Proteção em cada passo, sossego em cada aventura.
           </p>
         </div>
       </section>
+
+      <Essence />
 
       {/* ── Seção 2: Origem ── */}
       <section className="sobre__origem">
@@ -60,7 +74,7 @@ const SobreNos = ({ onNavigate }) => {
             </div>
             <div className="sobre__origem-solution-image">
               <img
-                src="/assets/kids-bracelet.png"
+                src={criancas}
                 alt="Crianças usando a pulseira inteligente Armilla"
               />
             </div>
@@ -93,6 +107,8 @@ const SobreNos = ({ onNavigate }) => {
           ))}
         </div>
       </section>
+
+      <Community />
 
       {/* ── Seção 4: CTA ── */}
       <section className="sobre__cta">

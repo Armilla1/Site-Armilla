@@ -1,6 +1,6 @@
 import React from 'react';
 import './Milla.css';
-import MillaImage from "../../assets/MillaeArmilla.png"
+import MillaImage from "../../assets/MillaSemFundo.png"
 
 const Milla = () => {
   return (

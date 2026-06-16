@@ -265,66 +265,6 @@ const Comprar = () => {
         </div>
       </section>
 
-      {/* Pulseira Banner */}
-      <section className="comprar__product">
-        <div className="comprar__product-inner">
-          <div className="comprar__product-text">
-            <div className="comprar__product-badge">Hardware</div>
-            <h2 className="comprar__product-title">
-              A pulseira inteligente<br />
-              <span>Armilla</span>
-            </h2>
-            <p className="comprar__product-desc">
-              Tecnologia GPS + rede celular em um design colorido e resistente. 
-              Confortável para crianças, poderosa para pais. Compatível com todos os planos.
-            </p>
-            <ul className="comprar__product-specs">
-              <li>📍 GPS em tempo real</li>
-              <li>💧 Resistente à água</li>
-              <li>🔋 Bateria de longa duração</li>
-              <li>🎨 Design colorido e divertido</li>
-            </ul>
-            <div className="comprar__product-price-row">
-              <span className="comprar__product-price">R$199,90</span>
-              <button className="comprar__product-btn">Comprar Pulseira</button>
-            </div>
-            <p className="comprar__product-note">Disponível também no Mercado Livre e Shopee</p>
-          </div>
-          <div className="comprar__product-visual">
-            <div className="comprar__product-glow" />
-            <div className="comprar__product-mockup">
-              <svg viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg" className="comprar__wristband-svg">
-                <circle cx="100" cy="100" r="85" stroke="url(#wGrad)" strokeWidth="18" strokeLinecap="round" fill="none" strokeDasharray="440 100"/>
-                <circle cx="100" cy="100" r="85" stroke="url(#wGrad2)" strokeWidth="6" strokeLinecap="round" fill="none" strokeDasharray="200 440" strokeDashoffset="120"/>
-                <circle cx="100" cy="100" r="38" fill="url(#wCenter)"/>
-                <circle cx="100" cy="100" r="24" fill="rgba(255,255,255,0.12)"/>
-                <path d="M100 82 C94 82 90 87 90 100 C90 110 94 113 97 114 C97 111 98 108 100 106 C102 108 103 111 103 114 C106 113 110 110 110 100 C110 87 106 82 100 82Z" fill="url(#wIcon)"/>
-                <defs>
-                  <linearGradient id="wGrad" x1="0" y1="0" x2="200" y2="200" gradientUnits="userSpaceOnUse">
-                    <stop stopColor="#a855f7"/>
-                    <stop offset="0.5" stopColor="#7b2fff"/>
-                    <stop offset="1" stopColor="#38bdf8"/>
-                  </linearGradient>
-                  <linearGradient id="wGrad2" x1="200" y1="0" x2="0" y2="200" gradientUnits="userSpaceOnUse">
-                    <stop stopColor="#38bdf8" stopOpacity="0.8"/>
-                    <stop offset="1" stopColor="#a855f7" stopOpacity="0.4"/>
-                  </linearGradient>
-                  <radialGradient id="wCenter" cx="50%" cy="40%" r="60%" gradientUnits="objectBoundingBox">
-                    <stop stopColor="#1a0035"/>
-                    <stop offset="1" stopColor="#0d0020"/>
-                  </radialGradient>
-                  <linearGradient id="wIcon" x1="90" y1="82" x2="110" y2="114" gradientUnits="userSpaceOnUse">
-                    <stop stopColor="#c084fc"/>
-                    <stop offset="1" stopColor="#60a5fa"/>
-                  </linearGradient>
-                </defs>
-              </svg>
-              <div className="comprar__product-pulse" />
-            </div>
-          </div>
-        </div>
-      </section>
-
       {/* Testimonials */}
       <section className="comprar__testimonials">
         <h2 className="comprar__section-title">O que nossos clientes dizem</h2>

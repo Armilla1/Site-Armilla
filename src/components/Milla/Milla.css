@@ -41,8 +41,8 @@
 }
 
 .milla__bird {
-  width: 400px;
-  height: 400px;
+  align-items: center;
+  width: 420px;
   margin-right: 20px;
   position: relative;
   z-index: 2;

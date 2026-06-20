@@ -89,21 +89,21 @@
 /* Logo */
 .auth__logo {
   display: flex;
-  align-items: center;
+  justify-content: center;
   gap: 10px;
   margin-bottom: 32px;
   cursor: pointer;
+  align-items: flex-end;
 }
 
-.auth__logo-icon {
-  width: 40px;
-  height: 40px;
+.auth__logo img {
+  width: 50px;
 }
 
 .auth__logo-text {
-  font-family: var(--font-display);
+  font-family: var(--font-logo);
   font-weight: 700;
-  font-size: 20px;
+  font-size: 40px;
   color: var(--white);
   letter-spacing: 2px;
 }
@@ -437,6 +437,10 @@
   position: relative;
   z-index: 1;
   text-align: center;
+}
+
+.auth__panel-image {
+  max-width: 80px;
 }
 
 .auth__panel-shield {

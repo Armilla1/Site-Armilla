@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './Navbar.css';
+import logo from "../../assets/logoArmilla.png"
 
 const Navbar = ({ onNavigate, currentPage }) => {
   const [scrolled, setScrolled] = useState(false);
@@ -30,6 +31,7 @@ const Navbar = ({ onNavigate, currentPage }) => {
     <nav className={`navbar ${scrolled ? 'navbar--scrolled' : ''}`}>
       <div className="navbar__container">
         <a href="#home" className="navbar__logo" onClick={() => onNavigate && onNavigate('home')}>
+          <img src={logo} alt="" />
           <span className="navbar__logo-text">ARMILLA</span>
         </a>
 

@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import './Auth.css';
+import Milla from '../assets/MillaSemFundo.png'
+import logo from '../assets/logoArmilla.png'
 
 const Auth = ({ onNavigate, initialMode = 'login' }) => {
   const [mode, setMode] = useState(initialMode); // 'login' | 'register' | 'forgot'
@@ -29,20 +31,7 @@ const Auth = ({ onNavigate, initialMode = 'login' }) => {
       <div className="auth__card">
         {/* Logo */}
         <div className="auth__logo" onClick={() => onNavigate && onNavigate('home')}>
-          <div className="auth__logo-icon">
-            <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <circle cx="20" cy="20" r="19" stroke="url(#aLogoGrad)" strokeWidth="2"/>
-              <path d="M20 8C14 8 10 13 10 20C10 25 13 28 17 29C17 26 18 23 20 21C22 23 23 26 23 29C27 28 30 25 30 20C30 13 26 8 20 8Z" fill="url(#aLogoGrad2)"/>
-              <defs>
-                <linearGradient id="aLogoGrad" x1="0" y1="0" x2="40" y2="40" gradientUnits="userSpaceOnUse">
-                  <stop stopColor="#a855f7"/><stop offset="1" stopColor="#38bdf8"/>
-                </linearGradient>
-                <linearGradient id="aLogoGrad2" x1="10" y1="8" x2="30" y2="32" gradientUnits="userSpaceOnUse">
-                  <stop stopColor="#c084fc"/><stop offset="1" stopColor="#60a5fa"/>
-                </linearGradient>
-              </defs>
-            </svg>
-          </div>
+          <img src={logo} alt="" />
           <span className="auth__logo-text">ARMILLA</span>
         </div>
 
@@ -312,13 +301,16 @@ const Auth = ({ onNavigate, initialMode = 'login' }) => {
               <span className="auth__panel-stat-label">dos pais querem acompanhar a rota dos filhos</span>
             </div>
             <div className="auth__panel-stat">
-              <span className="auth__panel-stat-num">R$199</span>
+              <span className="auth__panel-stat-num">R$150,00</span>
               <span className="auth__panel-stat-label">pulseira inteligente com GPS</span>
             </div>
           </div>
           <div className="auth__panel-pigeon">
             <div className="auth__panel-pigeon-circle">
+              <img src={Milla} alt="Imagem da mascote Milla" className='auth__panel-image'/>
+              {/*}
               <span style={{fontSize:'48px'}}>🐦</span>
+              {*/}
             </div>
             <p className="auth__panel-pigeon-text">Conheça a Milla, nossa pombinha guardiã!</p>
           </div>

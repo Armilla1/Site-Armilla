@@ -1,7 +1,7 @@
 import React from 'react';
 import './Hero.css';
 import comercialPulseSafe from "../../assets/comercialPulseSafe.png"
-import logoENome from "../../assets/logoENome.png"
+import logoENome from "../../assets/ArmillaFundoEscuro.png"
 
 const Hero = (props) => {
   return (

@@ -1,5 +1,11 @@
 @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&family=Poppins:wght@400;500;600;700;800&display=swap');
 
+@font-face {
+    font-family: 'Angst';
+    src: url('./assets/fonts/Angst-0.otf') format('opentype');
+    font-weight: 500;
+}
+
 :root {
   --purple-dark: #3a0080;
   --purple-mid: #5b00b5;
@@ -18,8 +24,9 @@
   --text-dark: #1a1a2e;
   --text-body: #374151;
 
+  --font-body: 'Poppins', sans-serif;
   --font-display: 'Poppins', sans-serif;
-  --font-body: 'Nunito', sans-serif;
+  --font-logo: 'Angst';
 
   --radius-sm: 8px;
   --radius-md: 16px;

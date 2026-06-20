@@ -6,6 +6,11 @@
     font-weight: 500;
 }
 
+html {
+  scroll-behavior: smooth;
+  font-size: 130%; /* 16px → 20px — escala todo o rem do projeto em +25% */
+}
+
 :root {
   --purple-dark: #3a0080;
   --purple-mid: #5b00b5;

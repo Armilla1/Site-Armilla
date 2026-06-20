@@ -17,7 +17,7 @@
 }
 
 .milla__title {
-  font-family: var(--font-logo);
+  font-family: var(--font-body);
   font-size: clamp(24px, 3vw, 36px);
   font-weight: 800;
   color: var(--text-dark);

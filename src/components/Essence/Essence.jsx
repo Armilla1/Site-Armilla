@@ -44,7 +44,7 @@ const faqs = [
   },
 ];
 
-const Essence = () => {
+const Essence = (props) => {
   const [openFaq, setOpenFaq] = useState(null);
 
   return (
@@ -70,7 +70,12 @@ const Essence = () => {
           </div>
 
           <div className="essence__actions">
-            <a href="#sobre" className="essence__btn">Sobre Nós</a>
+            <button
+            className="essence__btn"
+            onClick={() => props.onNavigate && props.onNavigate('sobre-nos')}
+            >
+             Sobre Nós
+            </button>
           </div>
         </div>
 

@@ -1,0 +1,47 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <!--
+      PROBLEMA CORRIGIDO: net10.0 é experimental/preview.
+      Trocado para net8.0 (LTS, suporte até Nov 2026) que é compatível
+      com todos os pacotes listados abaixo.
+
+      Se você realmente quer .NET 9 (current): troque para net9.0
+      e ajuste as versões dos pacotes para 9.x.x.
+
+      Versões dos pacotes corrigidas para combinar com .NET 8 LTS:
+        JwtBearer  8.x  → compatível com net8.0
+        OpenApi    8.x  → compatível com net8.0
+        SqlClient  6.x  → versão estável atual
+        Swashbuckle 6.x → versão estável para .NET 8
+
+      Microsoft.IdentityModel.Tokens está incluído TRANSITIVAMENTE pelo
+      JwtBearer — não precisa de PackageReference separado.
+    -->
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Hash de senhas com BCrypt — necessário no AuthController.cs -->
+    <PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
+
+    <!--
+      JWT Bearer: middleware que valida tokens JWT nas requisições.
+      Inclui transitivamente: Microsoft.IdentityModel.Tokens e System.IdentityModel.Tokens.Jwt
+      (usados em SecurityConfig.cs para JwtSecurityToken e SymmetricSecurityKey)
+    -->
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.8" />
+
+    <!-- OpenAPI / Swagger: geração de documentação da API -->
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.8" />
+
+    <!-- SQL Server: SqlConnection, SqlCommand usados no AuthController.cs -->
+    <PackageReference Include="Microsoft.Data.SqlClient" Version="5.2.2" />
+
+    <!-- Swagger UI: interface gráfica em /swagger -->
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.8.1" />
+  </ItemGroup>
+
+</Project>

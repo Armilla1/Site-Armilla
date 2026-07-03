@@ -13,9 +13,12 @@ const AboutProduct = (props) => {
         <h2 className="about__title">Sobre Nosso Produto</h2>
         <p className="about__subtitle">mais segurança para seu filho</p>
 
-        <a href="#comprar" className="about__btn">
+        <button 
+          className="about__btn" 
+          onClick={() => props.onNavigate("comprar")}
+        >
           Comprar Agora →
-        </a>
+        </button>
 
         <div className="about__grid">
           <div className="about__card about__card--large">

@@ -21,7 +21,7 @@ const comfortBenefits = [
   'Discrição e leveza',
 ];
 
-const Benefits = () => {
+const Benefits = (props) => {
   return (
     <section className="benefits">
       <div className="benefits__container">
@@ -61,7 +61,12 @@ const Benefits = () => {
           </div>
         </div>
 
-        <a href="#informacoes" className="benefits__btn">Saiba Mais</a>
+        <button
+          className="benefits__btn"
+          onClick={() => props.onNavigate && props.onNavigate('informacoes')}
+        >
+          Saiba Mais
+      </button>
       </div>
     </section>
   );

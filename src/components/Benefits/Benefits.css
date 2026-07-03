@@ -22,6 +22,7 @@
   flex-direction: column;
   gap: 16px;
   margin-bottom: 40px;
+  letter-spacing: 2px;
 }
 
 .benefits__card {
@@ -31,6 +32,10 @@
   align-items: center;
   gap: 32px;
   background: linear-gradient(135deg, #dbeafe 0%, #e0d7ff 50%, #f3e8ff 100%);
+}
+
+.benefits__card--right .benefits__item {
+    justify-content: flex-end;
 }
 
 .benefits__card--right {
@@ -95,7 +100,8 @@
   color: var(--purple-dark);
   padding: 6px 0;
   line-height: 1.4;
-  justify-content: center;
+  margin: 0px 30px;
+  justify-content: start;
 }
 
 .benefits__bullet {

@@ -6,6 +6,7 @@ import pink from "../assets/pulsesafe-rosa.png"
 import blue from "../assets/pulsesafe-azul.png"
 import purple from "../assets/pulsesafe-roxo.png"
 import yellow from "../assets/pulsesafe-amarelo.png"
+import Footer from '../components/Footer/Footer.jsx'
 
 const colorImages = {
   white, black, pink, blue, purple, yellow
@@ -95,7 +96,7 @@ const faqs = [
   },
 ];
 
-const Comprar = () => {
+const Comprar = (props) => {
   const [openFaq, setOpenFaq] = useState(null);
   const [billing, setBilling] = useState('monthly');
   const [productColor, setProductColor] = useState('purple');
@@ -104,80 +105,80 @@ const Comprar = () => {
   return (
     <div className="comprar">
       {/* Pulseira Banner */}
-    <section className="comprar__product">
-      <div className="comprar__product-inner">
+      <section className="comprar__product">
+        <div className="comprar__product-inner">
 
-        {/* Imagem */}
-        <div className="comprar__product-image-wrap">
-          {/*}<img
-            src="/assets/pulsesafe-bracelets.png"
-            alt="Pulseira inteligente PulseSafe em várias cores"
+          {/* Imagem */}
+          <div className="comprar__product-image-wrap">
+            {/*}<img
+              src="/assets/pulsesafe-bracelets.png"
+              alt="Pulseira inteligente PulseSafe em várias cores"
+              className="comprar__product-image"
+            />{*/}
+            <img
+            src={colorImages[productColor]}
+            alt="Pulseira inteligente PulseSafe"
             className="comprar__product-image"
-          />{*/}
-          <img
-          src={colorImages[productColor]}
-          alt="Pulseira inteligente PulseSafe"
-          className="comprar__product-image"
-          />
-        </div>
+            />
+          </div>
 
-        {/* Detalhes */}
-        <div className="comprar__product-text">
-          <h2 className="comprar__product-title">
-            <span className="comprar__">
-              Pulseira inteligente PulseSafe
-            </span>
-          </h2>
+          {/* Detalhes */}
+          <div className="comprar__product-text">
+            <h2 className="comprar__product-title">
+              <span className="comprar__">
+                Pulseira inteligente PulseSafe
+              </span>
+            </h2>
 
-          <div className="comprar__product-price-row">
-            <span className="comprar__product-price">
-              R${(150 * productQty).toFixed(2).replace(".", ",")}
-            </span>
+            <div className="comprar__product-price-row">
+              <span className="comprar__product-price">
+                R${(150 * productQty).toFixed(2).replace(".", ",")}
+              </span>
 
-            <div className="comprar__product-colors-wrap">
-              <span className="comprar__product-colors-label">Cores</span>
-              <div className="comprar__product-colors">
-                {[
-                  { id: "white",  hex: "#E8E8F0", label: "Branco"  },
-                  { id: "black",  hex: "#2D2D3A", label: "Preto"   },
-                  { id: "pink",   hex: "#F4A7B9", label: "Rosa"    },
-                  { id: "blue",   hex: "#4B9FE1", label: "Azul"    },
-                  { id: "purple", hex: "#5B2D8E", label: "Roxo"    },
-                  { id: "yellow", hex: "#D4B84A", label: "Amarelo" },
-                ].map((color) => (
-                  <button
-                    key={color.id}
-                    className={`comprar__color-btn ${productColor === color.id ? "comprar__color-btn--active" : ""}`}
-                    style={{ backgroundColor: color.hex }}
-                    aria-label={color.label}
-                    title={color.label}
-                    onClick={() => setProductColor(color.id)}
-                  />
-                ))}
+              <div className="comprar__product-colors-wrap">
+                <span className="comprar__product-colors-label">Cores</span>
+                <div className="comprar__product-colors">
+                  {[
+                    { id: "white",  hex: "#E8E8F0", label: "Branco"  },
+                    { id: "black",  hex: "#2D2D3A", label: "Preto"   },
+                    { id: "pink",   hex: "#F4A7B9", label: "Rosa"    },
+                    { id: "blue",   hex: "#4B9FE1", label: "Azul"    },
+                    { id: "purple", hex: "#5B2D8E", label: "Roxo"    },
+                    { id: "yellow", hex: "#D4B84A", label: "Amarelo" },
+                  ].map((color) => (
+                    <button
+                      key={color.id}
+                      className={`comprar__color-btn ${productColor === color.id ? "comprar__color-btn--active" : ""}`}
+                      style={{ backgroundColor: color.hex }}
+                      aria-label={color.label}
+                      title={color.label}
+                      onClick={() => setProductColor(color.id)}
+                    />
+                  ))}
+                </div>
               </div>
             </div>
-          </div>
 
-          <div className="comprar__product-qty-wrap">
-            <label className="comprar__product-qty-label">Quantidade</label>
-            <div className="comprar__product-qty-select-wrap">
-              <select
-                className="comprar__product-qty-select"
-                value={productQty}
-                onChange={(e) => setProductQty(Number(e.target.value))}
-              >
-                {[1, 2, 3, 4, 5].map((n) => (
-                  <option key={n} value={n}>{n}</option>
-                ))}
-              </select>
+            <div className="comprar__product-qty-wrap">
+              <label className="comprar__product-qty-label">Quantidade</label>
+              <div className="comprar__product-qty-select-wrap">
+                <select
+                  className="comprar__product-qty-select"
+                  value={productQty}
+                  onChange={(e) => setProductQty(Number(e.target.value))}
+                >
+                  {[1, 2, 3, 4, 5].map((n) => (
+                    <option key={n} value={n}>{n}</option>
+                  ))}
+                </select>
+              </div>
             </div>
+
+            <button className="comprar__product-btn" onClick={() => props.onNavigate("login")}>Comprar</button>
           </div>
 
-          <button className="comprar__product-btn">Comprar</button>
         </div>
-
-      </div>
-    </section>
+      </section>
 
       {/* Hero */}
       <section className="comprar__hero">
@@ -327,6 +328,8 @@ const Comprar = () => {
           </div>
         </div>
       </section>
+
+      <Footer />
     </div>
   );
 };

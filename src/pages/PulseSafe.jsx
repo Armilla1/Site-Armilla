@@ -64,9 +64,12 @@ export default function PulseSafe( props ) {
           PulseSafe, permitindo acompanhar a localização da criança, receber
           alertas e visualizar informações importantes em tempo real.
         </p>
-        <a href="/app" className="ps-btn ps-btn--outline">
+        <button
+          className="ps-btn ps-btn--outline"
+          onClick={() => props.onNavigate && props.onNavigate('aplicativo')}
+        >
           Conheça nosso APP
-        </a>
+        </button>
       </section>
 
       {/* ── Seção: CTA de compra ── */}
@@ -75,9 +78,9 @@ export default function PulseSafe( props ) {
           Garanta já uma{" "}
           <span className="ps-cta__highlight">PulseSafe</span> para sua criança
         </p>
-        <a href="/comprar" className="ps-btn ps-btn--solid">
+        <button className="ps-btn ps-btn--solid" onClick={() => props.onNavigate && props.onNavigate('comprar')}> 
           Comprar
-        </a>
+        </button>
       </section>
       <Footer />
     </div>

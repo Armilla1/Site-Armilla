@@ -12,12 +12,12 @@ const Home = ( props ) => {
   return (
     <>
       <Hero currentPage={props.currentPage}/>
-      <AboutProduct currentPage={props.currentPage}/>
+      <AboutProduct currentPage={props.currentPage} onNavigate={props.onNavigate}/>
       <Community />
-      <Benefits />
+      <Benefits currentPage={props.currentPage} onNavigate={props.onNavigate}/>
       <Plans />
       <Milla />
-      <Essence />
+      <Essence currentPage={props.currentPage} onNavigate={props.onNavigate}/>
       <Footer />
     </>
   );

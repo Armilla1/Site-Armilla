@@ -20,9 +20,9 @@ const teamMembers = [
   { name: 'Cainan Aparecido',  role: 'Scrum Master',   photo: cainanImage,   color: 'blue'   },
   { name: 'Gustavo Henrique',  role: 'Financeiro',     photo: gustavoImage,  color: 'blue'   },
   { name: 'Grazielly Oliveira',role: 'Marketing',      photo: graziImage,    color: 'purple' },
-  { name: 'Giovanna Karolline',role: 'Desenvolvedora', photo: giovannaImage, color: 'purple'   },
-  { name: 'Samuel Pacheco',    role: 'Desenvolvedor',  photo: samuelImage,   color: 'blue' },
-  { name: 'Breno Bueno',       role: 'Desenvolvedor',  photo: brenoImage,    color: 'blue'   },
+  { name: 'Giovanna Karolline',role: 'Desenvolvedora Backend', photo: giovannaImage, color: 'purple'   },
+  { name: 'Samuel Pacheco',    role: 'Desenvolvedor Backend',  photo: samuelImage,   color: 'blue' },
+  { name: 'Breno Bueno',       role: 'Desenvolvedor Fullstack',  photo: brenoImage,    color: 'blue'   },
   { name: 'Milla',             role: 'Mascote',        photo: millaImage,    color: 'purple' },
 ];
 

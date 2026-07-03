@@ -32,7 +32,7 @@ function App() {
     <>
       {console.log(`${page}`)}
       {showNavbar && <Navbar currentPage={page} onNavigate={handleNavigate} />}
-      {page === 'home'       && <Home currentPage={page}/>}
+      {page === 'home'       && <Home currentPage={page} onNavigate={handleNavigate}/>}
       {page === 'informacoes'&& <PulseSafe currentPage={page} onNavigate={handleNavigate}/>}
       {page === 'sobre-nos'  && <SobreNos currentPage={page} onNavigate={handleNavigate}/>}
       {page === 'comprar'    && <Comprar currentPage={page} onNavigate={handleNavigate}/>}

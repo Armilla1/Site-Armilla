@@ -8,9 +8,10 @@ import SobreNos from './pages/SobreNos.jsx'
 import Aplicativo from './pages/Aplicativo.jsx';
 import Navbar from './components/Navbar/Navbar.jsx';
 import { AccessibilityProvider } from './context/AccessibilityContext';
-import AccessibilityPanel from './components/Acessibilidade/AccessibilityPanel.jsx';
+import AccessibilityPanel from './components/Accessibility/AccessibilityPanel.jsx';
 import ChaveDeRecuperacao from './pages/ChaveDeRecuperacao';
 import NovaSenha from './pages/NovaSenha';
+import ScrollToTop from './components/ScrollToTop/ScrollToTop';
 
 function App() {
   const [page, setPage] = useState("home");
@@ -41,10 +42,13 @@ function App() {
       {page === 'chave-de-recuperacao' && (<ChaveDeRecuperacao onNavigate={handleNavigate} userEmail="teste@email.com" />)}
       {page === 'nova-senha' && (<NovaSenha onNavigate={handleNavigate}/>)}
       
+      <ScrollToTop />
+  
       <AccessibilityProvider>
         <AccessibilityPanel />
       </AccessibilityProvider>
-    </>
+      
+      </>
   );
 }
 

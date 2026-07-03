@@ -1,0 +1,60 @@
+/* ════ BOTÃO VOLTAR AO TOPO ════ */
+.scroll-top {
+  position: fixed;
+  bottom: 28px;
+  right: 64px;          /* fica à esquerda do botão de acessibilidade */
+  z-index: 99990;
+  filter: none !important;
+
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #A121C5, #111D96);
+  color: #fff;
+  border: 2px solid rgba(255,255,255,0.2);
+  box-shadow: 0 4px 20px rgba(100,14,134,0.45);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  /* começa invisível e deslocado para baixo */
+  opacity: 0;
+  transform: translateY(16px);
+  pointer-events: none;
+  transition:
+    opacity 0.28s ease,
+    transform 0.28s ease,
+    box-shadow 0.22s ease;
+}
+
+/* Aparece quando scroll > 300px */
+.scroll-top--visible {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.scroll-top:hover {
+  box-shadow: 0 8px 28px rgba(100,14,134,0.65);
+  transform: translateY(-3px);
+}
+
+.scroll-top:focus-visible {
+  outline: 3px solid #facc15;
+  outline-offset: 3px;
+}
+
+/* Redução de animação */
+@media (prefers-reduced-motion: reduce) {
+  .scroll-top { transition: opacity 0.01ms; }
+}
+
+@media (max-width: 480px) {
+  .scroll-top {
+    bottom: 16px;
+    right: 56px;
+    width: 40px;
+    height: 40px;
+  }
+}

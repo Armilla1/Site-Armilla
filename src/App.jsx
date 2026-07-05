@@ -12,6 +12,7 @@ import AccessibilityPanel from './components/Accessibility/AccessibilityPanel.js
 import ChaveDeRecuperacao from './pages/ChaveDeRecuperacao';
 import NovaSenha from './pages/NovaSenha';
 import ScrollToTop from './components/ScrollToTop/ScrollToTop';
+import Dashboard from './pages/Dashboard.jsx';
 
 function App() {
   const [page, setPage] = useState("home");
@@ -39,9 +40,9 @@ function App() {
       {page === 'comprar'    && <Comprar currentPage={page} onNavigate={handleNavigate}/>}
       {page === 'aplicativo' && <Aplicativo currentPage={page} onNavigate={handleNavigate} />}
       {page === 'auth'       && <Auth onNavigate={handleNavigate} initialMode={authMode} />}
+      {page === 'dashboard'  && <Dashboard onNavegar={handleNavigate} />}
       {page === 'chave-de-recuperacao' && (<ChaveDeRecuperacao onNavigate={handleNavigate} userEmail="teste@email.com" />)}
       {page === 'nova-senha' && (<NovaSenha onNavigate={handleNavigate}/>)}
-      
       <ScrollToTop />
   
       <AccessibilityProvider>

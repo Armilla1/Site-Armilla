@@ -212,7 +212,7 @@ public static class SecurityConfig
         // Política para PRODUÇÃO — mais restritiva
         opcoes.AddPolicy("Producao", policy =>
             policy
-                .WithOrigins("https://armillasegura.com.br") // Domínio final
+                .SetIsOriginAllowed(origin => true) // Temporário: permite GitHub Pages ou qualquer domínio para testes
                 .WithHeaders(                   // Apenas headers necessários
                     "Content-Type",
                     "Authorization",

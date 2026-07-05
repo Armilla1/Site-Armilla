@@ -94,10 +94,18 @@ public class AuthController : ControllerBase
         try
         {
             // -----------------------------------------------------------------
-            // PASSO 1: Buscar usuário no banco via Stored Procedure
+            // CORREÇÃO #7: Reutilização de SqlConnection
             // -----------------------------------------------------------------
-            // Usamos SqlConnection diretamente aqui para chamar a SP.
-            // Em projetos maiores, isole isso em um Repository/Service.
+            // A versão anterior abria 4 conexões separadas durante o login:
+            //   1. sp_AutenticarResponsavel
+            //   2. RegistrarResultadoLoginAsync
+            //   3. BuscarDadosResponsavelAsync
+            //   4. SalvarRefreshTokenAsync
+            // Agora abrimos UMA conexão e a reutilizamos em todos os passos,
+            // passando-a como parâmetro. O SQL Server Connection Pool do ADO.NET
+            // já evita abrir conexões TCP novas, mas ainda há overhead de
+            // acquire/release do pool e abertura de transação implícita.
+            // -----------------------------------------------------------------
             var connectionString = _config.GetConnectionString("ArmillaDB")
                 ?? throw new InvalidOperationException("Connection string não configurada.");
 
@@ -106,83 +114,60 @@ public class AuthController : ControllerBase
             string? senhaSaltBanco  = null;
             string? statusBanco     = null;
 
-            await using (var conn = new SqlConnection(connectionString))
+            // Abrimos a conexão uma única vez e a reutilizamos em todo o fluxo
+            await using var conn = new SqlConnection(connectionString);
+            await conn.OpenAsync();
+
+            // PASSO 1: Buscar usuário no banco via Stored Procedure
+            await using (var cmd = new SqlCommand("security.sp_AutenticarResponsavel", conn)
             {
-                await conn.OpenAsync();
-
-                await using var cmd = new SqlCommand("security.sp_AutenticarResponsavel", conn)
-                {
-                    CommandType = System.Data.CommandType.StoredProcedure
-                };
-
+                CommandType    = System.Data.CommandType.StoredProcedure,
+                CommandTimeout = 10
+            })
+            {
                 // PARAMETRIZAÇÃO — proteção contra SQL Injection
-                // Nunca faríamos: "SELECT * FROM ... WHERE Email = '" + dto.Email + "'"
-                // O SqlParameter separa dados do SQL — o banco trata como dado puro
-                cmd.Parameters.AddWithValue("@Email",       dto.Email);
-                cmd.Parameters.AddWithValue("@EnderecoIP",  ip);
-                cmd.Parameters.AddWithValue("@UserAgent",   userAgent);
+                cmd.Parameters.Add("@Email",      System.Data.SqlDbType.NVarChar, 320).Value = dto.Email;
+                cmd.Parameters.Add("@EnderecoIP", System.Data.SqlDbType.NVarChar, 45).Value  = ip;
+                cmd.Parameters.Add("@UserAgent",  System.Data.SqlDbType.NVarChar, 500).Value = userAgent;
 
                 await using var reader = await cmd.ExecuteReaderAsync();
                 if (await reader.ReadAsync())
                 {
-                    statusBanco     = reader["Status"]?.ToString();
-                    var idStr       = reader["ResponsavelId"]?.ToString();
-                    responsavelId   = idStr != null ? Guid.Parse(idStr) : null;
-                    senhaHashBanco  = reader["SenhaHash"]?.ToString();
-                    senhaSaltBanco  = reader["SenhaSalt"]?.ToString();
+                    statusBanco    = reader["Status"]?.ToString();
+                    var idStr      = reader["ResponsavelId"]?.ToString();
+                    responsavelId  = idStr != null ? Guid.Parse(idStr) : null;
+                    senhaHashBanco = reader["SenhaHash"]?.ToString();
+                    senhaSaltBanco = reader["SenhaSalt"]?.ToString();
                 }
             }
 
-            // -----------------------------------------------------------------
             // PASSO 2: Verificar se conta está bloqueada
-            // -----------------------------------------------------------------
+            // CONCEITO "Constant Time Response": mesmo aqui aguardamos tempo mínimo
+            // para evitar que um atacante meça diferenças de latência.
             if (statusBanco == "CONTA_BLOQUEADA")
             {
-                // CONCEITO "Constant Time Response":
-                // Mesmo para conta bloqueada, esperamos um tempo fixo antes de responder.
-                // Por quê? Sem isso, um atacante pode medir o tempo e saber se o email existe.
                 await EsperarTempoFixo(sw);
-
                 return StatusCode(429, new
                 {
-                    Erro    = "Conta temporariamente bloqueada por excesso de tentativas.",
-                    Dica    = "Aguarde 15 minutos ou redefina sua senha."
+                    Erro = "Conta temporariamente bloqueada por excesso de tentativas.",
+                    Dica = "Aguarde 15 minutos ou redefina sua senha."
                 });
             }
 
-            // -----------------------------------------------------------------
             // PASSO 3: Verificar se email existe
-            // -----------------------------------------------------------------
+            // CONCEITO "User Enumeration Prevention": mesma mensagem que senha errada.
             if (responsavelId == null || senhaHashBanco == null)
             {
-                // CONCEITO "User Enumeration Prevention":
-                // Não informamos se o email existe ou não.
-                // A mensagem é IDÊNTICA ao "senha errada" — isso impede que atacantes
-                // descubram quais emails estão cadastrados fazendo muitas tentativas.
-
                 await EsperarTempoFixo(sw);
-
-                // Registramos a tentativa com o email (que não existe)
-                await RegistrarLogFalhaAsync(ip, userAgent, "EMAIL_NAO_ENCONTRADO", dto.Email);
-
+                await RegistrarLogFalhaAsync(conn, ip, userAgent, "EMAIL_NAO_ENCONTRADO", dto.Email);
                 return Unauthorized(new { Erro = "Email ou senha inválidos." });
             }
 
-            // -----------------------------------------------------------------
             // PASSO 4: Verificar senha com BCrypt
-            // -----------------------------------------------------------------
-            // CONCEITO BCRYPT:
-            // BCrypt é um algoritmo de hash especialmente projetado para senhas.
-            // Diferente de MD5/SHA, ele é INTENCIONALMENTE lento (work factor).
-            // Isso torna brute force inviável — para testar 1 milhão de senhas
-            // levaria anos, não segundos.
-            //
-            // BCrypt.Verify compara a senha fornecida com o hash armazenado.
-            // O salt está embutido no hash, mas também guardamos separado por redundância.
+            // CONCEITO BCRYPT: intencionalmente lento (~250ms) — inviabiliza brute force.
             bool senhaCorreta;
             try
             {
-                // Esta operação leva ~100-300ms propositalmente (work factor 12)
                 senhaCorreta = BCrypt.Net.BCrypt.Verify(dto.Senha, senhaHashBanco, enhancedEntropy: true);
             }
             catch (Exception ex)
@@ -191,44 +176,32 @@ public class AuthController : ControllerBase
                 senhaCorreta = false;
             }
 
-            // -----------------------------------------------------------------
-            // PASSO 5: Registrar resultado no banco (atualiza tentativas)
-            // -----------------------------------------------------------------
-            await RegistrarResultadoLoginAsync(responsavelId.Value, senhaCorreta, ip, userAgent);
+            // PASSO 5: Registrar resultado no banco (atualiza tentativas) — mesma conexão
+            await RegistrarResultadoLoginAsync(conn, responsavelId.Value, senhaCorreta, ip, userAgent);
 
             if (!senhaCorreta)
             {
-                // Mesma mensagem genérica — não revelamos que o email existe
                 await EsperarTempoFixo(sw);
                 return Unauthorized(new { Erro = "Email ou senha inválidos." });
             }
 
-            // -----------------------------------------------------------------
-            // PASSO 6: Login bem-sucedido — emitir tokens
-            // -----------------------------------------------------------------
+            // PASSO 6: Login bem-sucedido — buscar dados e emitir tokens (mesma conexão)
+            var (nomeCompleto, email, role, emailConfirmado) = await BuscarDadosResponsavelAsync(conn, responsavelId.Value);
 
-            // Buscamos dados completos do usuário para o token
-            var (nomeCompleto, email, role, emailConfirmado) = await BuscarDadosResponsavelAsync(responsavelId.Value);
-
-            // Access Token: curto prazo, enviado no corpo da resposta
             var accessToken = _jwtService.GerarAccessToken(responsavelId.Value, email, role);
 
-            // Refresh Token: longo prazo, enviado como cookie HTTP-only
             var (refreshToken, refreshTokenHash) = _jwtService.GerarRefreshToken();
-            await SalvarRefreshTokenAsync(responsavelId.Value, refreshTokenHash, ip, userAgent);
+            await SalvarRefreshTokenAsync(conn, responsavelId.Value, refreshTokenHash, ip, userAgent);
 
-            // CONCEITO Cookie HTTP-Only:
-            // Ao enviar o Refresh Token como cookie com HttpOnly=true,
-            // o JavaScript da página NÃO PODE acessá-lo.
-            // Isso mitiga roubo de token por XSS — mesmo se um atacante injetar JS,
-            // não consegue roubar o Refresh Token.
+            // CONCEITO Cookie HTTP-Only: JS da página NÃO PODE acessar o Refresh Token,
+            // mitigando roubo de token por XSS.
             Response.Cookies.Append("armilla_refresh", refreshToken, new CookieOptions
             {
-                HttpOnly  = true,       // JS não acessa
-                Secure    = CookieSeguro(), // HTTPS obrigatório em produção; liberado em dev local sem HTTPS
-                SameSite  = SameSiteMode.Strict,  // Não envia em cross-site requests (CSRF protection)
-                Expires   = DateTimeOffset.UtcNow.AddDays(30),
-                Path      = "/api/auth" // Cookie só vai para rotas de auth
+                HttpOnly = true,
+                Secure   = CookieSeguro(),
+                SameSite = SameSiteMode.Strict,
+                Expires  = DateTimeOffset.UtcNow.AddDays(30),
+                Path     = "/api/auth"
             });
 
             _logger.LogInformation(
@@ -237,16 +210,15 @@ public class AuthController : ControllerBase
 
             return Ok(new LoginResponseDto
             {
-                AccessToken = accessToken,
-                ExpiresIn   = 900,  // 15 minutos em segundos
-                NomeCompleto = nomeCompleto,
-                Email       = email,
+                AccessToken     = accessToken,
+                ExpiresIn       = 900,
+                NomeCompleto    = nomeCompleto,
+                Email           = email,
                 EmailConfirmado = emailConfirmado
             });
         }
         catch (Exception ex)
         {
-            // Nunca retornamos detalhes da exceção para o cliente — é informação demais
             _logger.LogError(ex, "Erro interno no login");
             return StatusCode(500, new { Erro = "Erro interno. Tente novamente." });
         }
@@ -431,7 +403,7 @@ public class AuthController : ControllerBase
 
         var novoAccessToken = _jwtService.GerarAccessToken(responsavelId.Value, email!, role!);
         var (novoRefreshToken, novoRefreshHash) = _jwtService.GerarRefreshToken();
-        await SalvarRefreshTokenAsync(responsavelId.Value, novoRefreshHash, ip, Request.Headers["User-Agent"].ToString());
+        await SalvarRefreshTokenAsync(conn, responsavelId.Value, novoRefreshHash, ip, Request.Headers["User-Agent"].ToString());
 
         Response.Cookies.Append("armilla_refresh", novoRefreshToken, new CookieOptions
         {
@@ -493,22 +465,30 @@ public class AuthController : ControllerBase
             await Task.Delay(TEMPO_MINIMO_MS - tempoDecorrido);
     }
 
-    /// <summary>Registra tentativa falha de login sem ID de usuário conhecido</summary>
-    private async Task RegistrarLogFalhaAsync(string ip, string userAgent, string motivo, string emailTentativa)
+    /// <summary>
+    /// Registra tentativa falha de login reutilizando a conexão já aberta.
+    /// CORREÇÃO #8: passa DBNull.Value explícito para ResponsavelId — em logins
+    /// com email inexistente não temos um ID, mas a coluna pode ser NOT NULL
+    /// sem default. Agora o INSERT omite ResponsavelId completamente nesses casos,
+    /// compatível tanto com colunas NULL quanto com colunas que têm valor default.
+    /// </summary>
+    private async Task RegistrarLogFalhaAsync(
+        SqlConnection conn, string ip, string userAgent, string motivo, string emailTentativa)
     {
         try
         {
-            var connectionString = _config.GetConnectionString("ArmillaDB")!;
-            await using var conn = new SqlConnection(connectionString);
-            await conn.OpenAsync();
             await using var cmd = conn.CreateCommand();
+            cmd.CommandTimeout = 5;
+            // Não incluímos ResponsavelId: em logins com email desconhecido não
+            // há ID de usuário — dependemos do default ou NULL da coluna no banco.
             cmd.CommandText = @"
                 INSERT INTO audit.LogAcoes (Acao, EnderecoIP, UserAgent, Sucesso, MensagemErro, Detalhes)
                 VALUES ('LOGIN_FALHA', @IP, @UA, 0, @Motivo, @Detalhes)";
-            cmd.Parameters.AddWithValue("@IP",      ip);
-            cmd.Parameters.AddWithValue("@UA",      userAgent);
-            cmd.Parameters.AddWithValue("@Motivo",  motivo);
-            cmd.Parameters.AddWithValue("@Detalhes", $"{{\"email_tentativa\":\"{MascararEmail(emailTentativa)}\"}}");
+            cmd.Parameters.Add("@IP",      System.Data.SqlDbType.NVarChar, 45).Value   = ip;
+            cmd.Parameters.Add("@UA",      System.Data.SqlDbType.NVarChar, 500).Value  = userAgent;
+            cmd.Parameters.Add("@Motivo",  System.Data.SqlDbType.NVarChar, 100).Value  = motivo;
+            cmd.Parameters.Add("@Detalhes",System.Data.SqlDbType.NVarChar, 500).Value  =
+                $"{{\"email_tentativa\":\"{MascararEmail(emailTentativa)}\"}}";
             await cmd.ExecuteNonQueryAsync();
         }
         catch (Exception ex)
@@ -517,47 +497,47 @@ public class AuthController : ControllerBase
         }
     }
 
-    private async Task RegistrarResultadoLoginAsync(Guid responsavelId, bool sucesso, string ip, string userAgent)
+    // CORREÇÃO #7: recebe conn como parâmetro — reutiliza a conexão já aberta no Login
+    private static async Task RegistrarResultadoLoginAsync(
+        SqlConnection conn, Guid responsavelId, bool sucesso, string ip, string userAgent)
     {
-        var connectionString = _config.GetConnectionString("ArmillaDB")!;
-        await using var conn = new SqlConnection(connectionString);
-        await conn.OpenAsync();
         await using var cmd = new SqlCommand("security.sp_RegistrarResultadoLogin", conn)
         {
-            CommandType = System.Data.CommandType.StoredProcedure
+            CommandType    = System.Data.CommandType.StoredProcedure,
+            CommandTimeout = 10
         };
-        cmd.Parameters.AddWithValue("@ResponsavelId",  responsavelId);
-        cmd.Parameters.AddWithValue("@Sucesso",         sucesso ? 1 : 0);
-        cmd.Parameters.AddWithValue("@EnderecoIP",      ip);
-        cmd.Parameters.AddWithValue("@UserAgent",       userAgent);
+        cmd.Parameters.Add("@ResponsavelId", System.Data.SqlDbType.UniqueIdentifier).Value = responsavelId;
+        cmd.Parameters.Add("@Sucesso",       System.Data.SqlDbType.Bit).Value              = sucesso;
+        cmd.Parameters.Add("@EnderecoIP",    System.Data.SqlDbType.NVarChar, 45).Value     = ip;
+        cmd.Parameters.Add("@UserAgent",     System.Data.SqlDbType.NVarChar, 500).Value    = userAgent;
         await cmd.ExecuteNonQueryAsync();
     }
 
-    private async Task<(string Nome, string Email, string Role, bool EmailConfirmado)> BuscarDadosResponsavelAsync(Guid responsavelId)
+    // CORREÇÃO #7: recebe conn como parâmetro — reutiliza a conexão já aberta no Login
+    private static async Task<(string Nome, string Email, string Role, bool EmailConfirmado)>
+        BuscarDadosResponsavelAsync(SqlConnection conn, Guid responsavelId)
     {
-        var connectionString = _config.GetConnectionString("ArmillaDB")!;
-        await using var conn = new SqlConnection(connectionString);
-        await conn.OpenAsync();
         await using var cmd = conn.CreateCommand();
-        cmd.CommandText = "SELECT NomeCompleto, Email, EmailConfirmado FROM app.Responsaveis WHERE Id = @Id";
-        cmd.Parameters.AddWithValue("@Id", responsavelId);
+        cmd.CommandTimeout = 10;
+        cmd.CommandText    = "SELECT NomeCompleto, Email, EmailConfirmado FROM app.Responsaveis WHERE Id = @Id";
+        cmd.Parameters.Add("@Id", System.Data.SqlDbType.UniqueIdentifier).Value = responsavelId;
         await using var reader = await cmd.ExecuteReaderAsync();
         await reader.ReadAsync();
         return (reader.GetString(0), reader.GetString(1), "Responsavel", reader.GetBoolean(2));
     }
 
-    private async Task SalvarRefreshTokenAsync(Guid responsavelId, string hash, string ip, string userAgent)
+    // CORREÇÃO #7: recebe conn como parâmetro — reutiliza a conexão já aberta no Login
+    private static async Task SalvarRefreshTokenAsync(
+        SqlConnection conn, Guid responsavelId, string hash, string ip, string userAgent)
     {
-        var connectionString = _config.GetConnectionString("ArmillaDB")!;
-        await using var conn = new SqlConnection(connectionString);
-        await conn.OpenAsync();
         await using var cmd = conn.CreateCommand();
-        cmd.CommandText = @"
+        cmd.CommandTimeout = 10;
+        cmd.CommandText    = @"
             INSERT INTO security.RefreshTokens (ResponsavelId, TokenHash, DispositivoInfo, ExpiraEm)
             VALUES (@RId, @Hash, @Dev, DATEADD(DAY, 30, SYSUTCDATETIME()))";
-        cmd.Parameters.AddWithValue("@RId",  responsavelId);
-        cmd.Parameters.AddWithValue("@Hash", hash);
-        cmd.Parameters.AddWithValue("@Dev",  $"{userAgent}|{ip}");
+        cmd.Parameters.Add("@RId",  System.Data.SqlDbType.UniqueIdentifier).Value = responsavelId;
+        cmd.Parameters.Add("@Hash", System.Data.SqlDbType.NVarChar, 500).Value    = hash;
+        cmd.Parameters.Add("@Dev",  System.Data.SqlDbType.NVarChar, 500).Value    = $"{userAgent}|{ip}";
         await cmd.ExecuteNonQueryAsync();
     }
 

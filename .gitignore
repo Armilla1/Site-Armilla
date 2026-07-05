@@ -22,3 +22,22 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# .NET — segredos e configurações locais
+# appsettings.Development.json pode conter chaves JWT, credenciais SMTP, tokens.
+# Cada desenvolvedor configura os segredos via 'dotnet user-secrets' ou .env local.
+**/appsettings.Development.json
+**/appsettings.*.json
+!**/appsettings.json
+
+# user-secrets do .NET (armazenados fora do repo)
+**/secrets.json
+
+# Binários e cache .NET
+**/bin/
+**/obj/
+
+# Arquivos de variáveis de ambiente locais
+.env
+.env.local
+.env.*.local

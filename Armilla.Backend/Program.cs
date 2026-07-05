@@ -67,6 +67,48 @@ else
 
 var app = builder.Build();
 
+// ── VALIDAÇÃO FAIL-FAST DA CONNECTION STRING ──────────────────────────────────
+// Sem isso, o servidor sobe normalmente mas a primeira requisição real falha
+// com 500 genérico ("Erro interno"), sem indicação clara de que o problema
+// é conectividade com o banco.
+// Com isso, o erro aparece nos logs de startup com detalhes da exceção SQL —
+// muito mais fácil de diagnosticar.
+//
+// Estratégia: aviso em dev (servidor sobe mesmo sem banco, facilita trabalhar
+// no frontend isolado), exceção em produção (não faz sentido subir sem banco).
+// ─────────────────────────────────────────────────────────────────────────────
+{
+    var logger  = app.Services.GetRequiredService<ILogger<Program>>();
+    var connStr = builder.Configuration.GetConnectionString("ArmillaDB");
+
+    if (string.IsNullOrWhiteSpace(connStr))
+    {
+        var msg = "CRÍTICO: ConnectionStrings:ArmillaDB não configurada. " +
+                  "Configure via appsettings, variável de ambiente ou dotnet user-secrets.";
+        logger.LogCritical(msg);
+        if (!app.Environment.IsDevelopment())
+            throw new InvalidOperationException(msg);
+    }
+    else
+    {
+        try
+        {
+            await using var conn = new Microsoft.Data.SqlClient.SqlConnection(connStr);
+            await conn.OpenAsync();
+            logger.LogInformation("✅ Conectividade com ArmillaDB confirmada no startup.");
+        }
+        catch (Exception ex)
+        {
+            logger.LogCritical(ex,
+                "❌ Falha ao conectar ao ArmillaDB no startup. " +
+                "Verifique a connection string e se o SQL Server está acessível.");
+            if (!app.Environment.IsDevelopment())
+                throw; // Em produção interrompe o startup para não subir um servidor inoperante
+            // Em dev: apenas avisa e continua (permite trabalhar no frontend sem banco local)
+        }
+    }
+}
+
 // ── ORDEM DOS MIDDLEWARES IMPORTA ─────────────────────────────────────────────
 // O ASP.NET Core processa requisições em pipeline. Cada middleware chama o próximo.
 // A ordem errada pode fazer segurança ser ignorada ou CORS não funcionar.
@@ -84,12 +126,9 @@ var app = builder.Build();
 var ambiente = app.Environment.IsDevelopment() ? "Desenvolvimento" : "Producao";
 app.UseCors(ambiente);
 
-// 2. Swagger — apenas em desenvolvimento
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI(); // Interface gráfica em http://localhost:<porta>/swagger
-}
+// 2. Swagger — Habilitado temporariamente também em Produção para facilitar os testes!
+app.UseSwagger();
+app.UseSwaggerUI(); // Interface gráfica em /swagger
 
 // 3. Autenticação → lê o JWT do header Authorization: Bearer <token>
 //    ou do cookie "armilla_token" (configurado em SecurityConfig.cs)

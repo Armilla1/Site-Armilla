@@ -43,7 +43,13 @@ const Auth = ({ onNavigate, initialMode = 'login' }) => {
           }),
         });
   
-        const dados = await resposta.json();
+        const contentType = resposta.headers.get("content-type");
+        let dados = {};
+        if (contentType && contentType.includes("application/json")) {
+            dados = await resposta.json();
+        } else if (!resposta.ok) {
+            throw new Error("Erro de comunicação com o servidor (o banco de dados pode estar offline).");
+        }
   
         if (!resposta.ok) {
           // 401 → "Email ou senha inválidos."
@@ -114,7 +120,13 @@ const Auth = ({ onNavigate, initialMode = 'login' }) => {
           }),
         });
   
-        const dados = await resposta.json();
+        const contentType = resposta.headers.get("content-type");
+        let dados = {};
+        if (contentType && contentType.includes("application/json")) {
+            dados = await resposta.json();
+        } else if (!resposta.ok) {
+            throw new Error("Erro de comunicação com o servidor (o banco de dados pode estar offline).");
+        }
   
         if (resposta.status === 409) {
           throw new Error("Este e-mail já está cadastrado. Tente fazer login.");

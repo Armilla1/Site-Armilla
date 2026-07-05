@@ -1,16 +1,16 @@
-﻿// =============================================================================
-// ARMILLA SEGURA â€” Controller de HistÃ³rico de MovimentaÃ§Ã£o
+// =============================================================================
+// ARMILLA SEGURA — Controller de Histórico de Movimentação
 // Arquivo: HistoricoController.cs
-// LOCALIZAÃ‡ÃƒO: Armilla_Backend/Controllers/HistoricoController.cs
+// LOCALIZAÇÃO: Armilla_Backend/Controllers/HistoricoController.cs
 // =============================================================================
 // CONECTA COM:
-//   - app.Localizacoes (jÃ¡ existia em armilla_database.sql desde o inÃ­cio â€”
-//     Ã© a mesma tabela onde IngestaoController e SimulacaoController gravam
-//     cada ponto de GPS recebido. Esse endpoint sÃ³ LÃŠ o que jÃ¡ vinha sendo
-//     gravado; nada novo precisou ser criado no banco pra isso, sÃ³ faltava
+//   - app.Localizacoes (já existia em armilla_database.sql desde o início —
+//     é a mesma tabela onde IngestaoController e SimulacaoController gravam
+//     cada ponto de GPS recebido. Esse endpoint só LÊ o que já vinha sendo
+//     gravado; nada novo precisou ser criado no banco pra isso, só faltava
 //     o endpoint).
-//   - Frontend: Dashboard.jsx â†’ aba "HistÃ³rico" (o seletor de crianÃ§a+data
-//     jÃ¡ existia na tela, mas era sÃ³ um placeholder sem chamar nada).
+//   - Frontend: Dashboard.jsx → aba "Histórico" (o seletor de criança+data
+//     já existia na tela, mas era só um placeholder sem chamar nada).
 // =============================================================================
 
 using Microsoft.AspNetCore.Mvc;
@@ -36,11 +36,11 @@ public class HistoricoController : ControllerBase
 
     private Guid ResponsavelIdAtual() =>
         Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)
-            ?? throw new InvalidOperationException("Token sem identificador de usuÃ¡rio."));
+            ?? throw new InvalidOperationException("Token sem identificador de usuário."));
 
     // =========================================================================
     // GET /api/historico?criancaId={id}&data=2026-06-21
-    // Retorna todos os pontos de GPS daquele dia, em ordem cronolÃ³gica â€”
+    // Retorna todos os pontos de GPS daquele dia, em ordem cronológica —
     // o frontend desenha isso como uma polyline (trajeto) no mapa.
     // =========================================================================
     [HttpGet]
@@ -52,17 +52,18 @@ public class HistoricoController : ControllerBase
         await using var conn = new SqlConnection(connectionString);
         await conn.OpenAsync();
 
-        // Confirma posse da crianÃ§a (anti-IDOR) e descobre a pulseira dela.
-        // Uma crianÃ§a pode jÃ¡ ter trocado de pulseira no passado â€” por isso
-        // pegamos TODAS as pulseiras jÃ¡ vinculadas a ela, nÃ£o sÃ³ a atual,
-        // pra nÃ£o perder histÃ³rico de uma pulseira antiga.
+        // Confirma posse da criança (anti-IDOR) e descobre a pulseira dela.
+        // Uma criança pode já ter trocado de pulseira no passado — por isso
+        // pegamos TODAS as pulseiras já vinculadas a ela, não só a atual,
+        // pra não perder histórico de uma pulseira antiga.
         await using var cmdValida = conn.CreateCommand();
+        cmdValida.CommandTimeout = 10;
         cmdValida.CommandText = @"
             SELECT p.Id FROM app.Pulseiras p
             INNER JOIN app.Criancas c ON c.Id = p.CriancaId
             WHERE p.CriancaId = @CriancaId AND c.ResponsavelId = @ResponsavelId";
-        cmdValida.Parameters.AddWithValue("@CriancaId", criancaId);
-        cmdValida.Parameters.AddWithValue("@ResponsavelId", responsavelId);
+        cmdValida.Parameters.Add("@CriancaId",    System.Data.SqlDbType.UniqueIdentifier).Value = criancaId;
+        cmdValida.Parameters.Add("@ResponsavelId",System.Data.SqlDbType.UniqueIdentifier).Value = responsavelId;
 
         var pulseiraIds = new List<Guid>();
         await using (var reader = await cmdValida.ExecuteReaderAsync())
@@ -75,28 +76,29 @@ public class HistoricoController : ControllerBase
             return Ok(new { pontos = Array.Empty<object>(), distanciaTotalMetros = 0.0 });
 
         var inicio = data.ToDateTime(TimeOnly.MinValue);
-        var fim = data.ToDateTime(TimeOnly.MaxValue);
+        var fim    = data.ToDateTime(TimeOnly.MaxValue);
 
         await using var cmd = conn.CreateCommand();
+        cmd.CommandTimeout = 15;
         cmd.CommandText = @"
             SELECT Latitude, Longitude, Precisao, RegistradoEm
             FROM app.Localizacoes
             WHERE PulseiraId IN ({0}) AND RegistradoEm BETWEEN @Inicio AND @Fim
             ORDER BY RegistradoEm ASC";
 
-        // Monta a lista de pulseiras dinamicamente como parÃ¢metros nomeados
+        // Monta a lista de pulseiras dinamicamente como parâmetros nomeados
         // (em vez de concatenar os GUIDs direto na string, que abriria
-        // espaÃ§o pra SQL injection) â€” cada Id vira um parÃ¢metro @P0, @P1...
+        // espaço pra SQL injection) — cada Id vira um parâmetro @P0, @P1...
         var nomesParametros = new List<string>();
         for (int i = 0; i < pulseiraIds.Count; i++)
         {
             var nome = $"@P{i}";
             nomesParametros.Add(nome);
-            cmd.Parameters.AddWithValue(nome, pulseiraIds[i]);
+            cmd.Parameters.Add(nome, System.Data.SqlDbType.UniqueIdentifier).Value = pulseiraIds[i];
         }
         cmd.CommandText = string.Format(cmd.CommandText, string.Join(",", nomesParametros));
-        cmd.Parameters.AddWithValue("@Inicio", inicio);
-        cmd.Parameters.AddWithValue("@Fim", fim);
+        cmd.Parameters.Add("@Inicio", System.Data.SqlDbType.DateTime2).Value = inicio;
+        cmd.Parameters.Add("@Fim",    System.Data.SqlDbType.DateTime2).Value = fim;
 
         var pontos = new List<(double Lat, double Lng, DateTime Em)>();
         await using (var reader = await cmd.ExecuteReaderAsync())
@@ -111,11 +113,11 @@ public class HistoricoController : ControllerBase
             }
         }
 
-        // Calcula a distÃ¢ncia total percorrida (soma de Haversine entre
-        // pontos consecutivos) â€” informaÃ§Ã£o simples que ajuda a entender o
-        // dia, sem precisar de nenhuma lÃ³gica nova: Ã© a mesma fÃ³rmula jÃ¡
-        // usada na verificaÃ§Ã£o de zona segura, sÃ³ repetida em C# em vez de
-        // SQL porque aqui jÃ¡ temos os pontos em memÃ³ria.
+        // Calcula a distância total percorrida (soma de Haversine entre
+        // pontos consecutivos) — informação simples que ajuda a entender o
+        // dia, sem precisar de nenhuma lógica nova: é a mesma fórmula já
+        // usada na verificação de zona segura, só repetida em C# em vez de
+        // SQL porque aqui já temos os pontos em memória.
         double distanciaTotal = 0;
         for (int i = 1; i < pontos.Count; i++)
         {
@@ -129,7 +131,7 @@ public class HistoricoController : ControllerBase
         });
     }
 
-    // FÃ³rmula de Haversine â€” mesma usada em LocalizacaoProcessor, sÃ³ em C#
+    // Fórmula de Haversine — mesma usada em LocalizacaoProcessor, só em C#
     private static double DistanciaMetros(double lat1, double lng1, double lat2, double lng2)
     {
         const double raioTerraMetros = 6371000;
@@ -144,4 +146,3 @@ public class HistoricoController : ControllerBase
 
     private static double DegToRad(double graus) => graus * Math.PI / 180.0;
 }
-

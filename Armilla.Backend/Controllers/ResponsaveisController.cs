@@ -149,23 +149,44 @@ public class ResponsaveisController : ControllerBase
         await using var conn = new SqlConnection(connectionString);
         await conn.OpenAsync();
 
-        await using var cmdAtualiza = conn.CreateCommand();
-        cmdAtualiza.CommandText = @"
-            UPDATE app.Responsaveis SET FotoUrl = @Url, AtualizadoEm = SYSUTCDATETIME()
-            WHERE Id = @Id";
-        cmdAtualiza.Parameters.AddWithValue("@Url", dto.UrlPublica);
-        cmdAtualiza.Parameters.AddWithValue("@Id", responsavelId);
-        await cmdAtualiza.ExecuteNonQueryAsync();
+        // CORREÇÃO #13: SqlTransaction torna UPDATE + INSERT atômicos.
+        // Sem transação: se o INSERT em FotosPerfil falhar (ex: violação de
+        // constraint), o UPDATE em Responsaveis já terá sido commitado e a
+        // foto fica atualizada no perfil mas sem registro histórico —
+        // estado inconsistente. Com transação, ou os dois acontecem, ou nenhum.
+        await using var tx = conn.BeginTransaction();
+        try
+        {
+            await using var cmdAtualiza = conn.CreateCommand();
+            cmdAtualiza.Transaction  = tx;
+            cmdAtualiza.CommandTimeout = 10;
+            cmdAtualiza.CommandText  = @"
+                UPDATE app.Responsaveis
+                SET FotoUrl = @Url, AtualizadoEm = SYSUTCDATETIME()
+                WHERE Id = @Id";
+            cmdAtualiza.Parameters.Add("@Url", System.Data.SqlDbType.NVarChar, 500).Value = dto.UrlPublica;
+            cmdAtualiza.Parameters.Add("@Id",  System.Data.SqlDbType.UniqueIdentifier).Value = responsavelId;
+            await cmdAtualiza.ExecuteNonQueryAsync();
 
-        await using var cmdRegistra = conn.CreateCommand();
-        cmdRegistra.CommandText = @"
-            INSERT INTO app.FotosPerfil (ResponsavelId, NomeArquivo, ContentType, UrlPublica)
-            VALUES (@ResponsavelId, @Nome, @ContentType, @Url)";
-        cmdRegistra.Parameters.AddWithValue("@ResponsavelId", responsavelId);
-        cmdRegistra.Parameters.AddWithValue("@Nome", dto.NomeArquivo);
-        cmdRegistra.Parameters.AddWithValue("@ContentType", dto.ContentType ?? "image/jpeg");
-        cmdRegistra.Parameters.AddWithValue("@Url", dto.UrlPublica);
-        await cmdRegistra.ExecuteNonQueryAsync();
+            await using var cmdRegistra = conn.CreateCommand();
+            cmdRegistra.Transaction  = tx;
+            cmdRegistra.CommandTimeout = 10;
+            cmdRegistra.CommandText  = @"
+                INSERT INTO app.FotosPerfil (ResponsavelId, NomeArquivo, ContentType, UrlPublica)
+                VALUES (@ResponsavelId, @Nome, @ContentType, @Url)";
+            cmdRegistra.Parameters.Add("@ResponsavelId", System.Data.SqlDbType.UniqueIdentifier).Value = responsavelId;
+            cmdRegistra.Parameters.Add("@Nome",          System.Data.SqlDbType.NVarChar, 255).Value    = dto.NomeArquivo;
+            cmdRegistra.Parameters.Add("@ContentType",   System.Data.SqlDbType.NVarChar, 100).Value    = dto.ContentType ?? "image/jpeg";
+            cmdRegistra.Parameters.Add("@Url",           System.Data.SqlDbType.NVarChar, 500).Value    = dto.UrlPublica;
+            await cmdRegistra.ExecuteNonQueryAsync();
+
+            await tx.CommitAsync();
+        }
+        catch
+        {
+            await tx.RollbackAsync();
+            throw;
+        }
 
         return Ok(new { Mensagem = "Foto atualizada com sucesso.", fotoUrl = dto.UrlPublica });
     }

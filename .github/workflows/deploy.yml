@@ -1,0 +1,52 @@
+name: Deploy Frontend para GitHub Pages
+
+# Roda sempre que der push na branch main
+on:
+  push:
+    branches:
+      - main
+  # Permite rodar manualmente pelo painel do GitHub Actions
+  workflow_dispatch:
+
+# Permissões para publicar no GitHub Pages
+permissions:
+  contents: write
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      # 1. Baixa o código do repositório
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # 2. Configura Node.js 20 (LTS)
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      # 3. Instala dependências (equivalente a npm install)
+      - name: Instalar dependências
+        run: npm ci
+
+      # 4. Build de produção
+      #    VITE_API_URL vem do GitHub Secret configurado em:
+      #    Repository → Settings → Secrets and variables → Actions → New secret
+      #    Nome: VITE_API_URL
+      #    Valor: URL do seu backend (ex: https://meu-backend.onrender.com)
+      - name: Build
+        run: npm run build
+        env:
+          # Se o secret não existir, usa localhost como fallback
+          VITE_API_URL: ${{ secrets.VITE_API_URL || 'http://localhost:5016' }}
+
+      # 5. Publica o conteúdo da pasta dist/ no GitHub Pages
+      - name: Deploy para GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist
+          # Garante que rotas do React funcionem (sem 404 em F5)
+          force_orphan: true

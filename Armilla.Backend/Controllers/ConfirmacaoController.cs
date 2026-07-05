@@ -341,20 +341,31 @@ public class ConfirmacaoController : ControllerBase
                 return BadRequest(new { Erro = "Sessão de redefinição inválida ou expirada. Reinicie o processo de recuperação." });
 
             var senhaHash = BCrypt.Net.BCrypt.HashPassword(dto.NovaSenha, workFactor: 12, enhancedEntropy: true);
+            // CORREÇÃO: o salt BCrypt está embutido nos primeiros 29 chars do hash.
+            // RedefinirSenha precisa atualizar os DOIS campos — antes só atualizava
+            // SenhaHash, deixando SenhaSalt do hash antigo, tornando a coluna
+            // inconsistente (o salt não correspondia mais ao hash vigente).
+            var senhaSalt = senhaHash[..29];
 
             await using var cmdUpdate = conn.CreateCommand();
             cmdUpdate.CommandText = @"
-                UPDATE app.Responsaveis SET SenhaHash=@Hash, AtualizadoEm=SYSUTCDATETIME() WHERE Id=@RespId;
+                UPDATE app.Responsaveis
+                SET SenhaHash     = @Hash,
+                    SenhaSalt     = @Salt,
+                    AtualizadoEm  = SYSUTCDATETIME()
+                WHERE Id = @RespId;
 
                 UPDATE app.RecuperacaoSenha SET Utilizado=1, UtilizadoEm=SYSUTCDATETIME()
                 WHERE Id=@RegistroId;
 
                 UPDATE security.RefreshTokens SET Revogado=1, RevogadoEm=SYSUTCDATETIME(), MotivoRevogacao='TROCA_SENHA'
                 WHERE ResponsavelId=@RespId AND Revogado=0;";
-            cmdUpdate.Parameters.AddWithValue("@RespId", responsavelId.Value);
-            cmdUpdate.Parameters.AddWithValue("@RegistroId", registroId.Value);
-            cmdUpdate.Parameters.AddWithValue("@Hash", senhaHash);
+            cmdUpdate.Parameters.Add("@RespId",     System.Data.SqlDbType.UniqueIdentifier).Value = responsavelId.Value;
+            cmdUpdate.Parameters.Add("@RegistroId", System.Data.SqlDbType.UniqueIdentifier).Value = registroId.Value;
+            cmdUpdate.Parameters.Add("@Hash",       System.Data.SqlDbType.NVarChar, 255).Value = senhaHash;
+            cmdUpdate.Parameters.Add("@Salt",       System.Data.SqlDbType.NVarChar, 60).Value  = senhaSalt;
             await cmdUpdate.ExecuteNonQueryAsync();
+
         }
 
         return Ok(new { Mensagem = "Senha redefinida com sucesso. Faça login com sua nova senha." });

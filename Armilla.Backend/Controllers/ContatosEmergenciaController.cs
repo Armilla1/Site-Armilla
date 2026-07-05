@@ -122,25 +122,29 @@ public class ContatosEmergenciaController : ControllerBase
         await using var conn = new SqlConnection(connectionString);
         await conn.OpenAsync();
         await using var cmd = conn.CreateCommand();
+        cmd.CommandTimeout = 10;
         cmd.CommandText = @"
             INSERT INTO app.ContatosEmergencia
                 (ResponsavelId, Nome, Relacao, Telefone, TipoContato, Prioridade)
             OUTPUT INSERTED.Id, INSERTED.CriadoEm
             VALUES
                 (@ResponsavelId, @Nome, @Relacao, @Telefone, @TipoContato, @Prioridade)";
-        cmd.Parameters.AddWithValue("@ResponsavelId", responsavelId);
-        cmd.Parameters.AddWithValue("@Nome", dto.Nome);
-        cmd.Parameters.AddWithValue("@Relacao", (object?)dto.Relacao ?? DBNull.Value);
-        cmd.Parameters.AddWithValue("@Telefone", dto.Telefone);
-        cmd.Parameters.AddWithValue("@TipoContato", dto.TipoContato.ToUpperInvariant());
-        cmd.Parameters.AddWithValue("@Prioridade", dto.Prioridade ?? 1);
+        cmd.Parameters.Add("@ResponsavelId", System.Data.SqlDbType.UniqueIdentifier).Value = responsavelId;
+        cmd.Parameters.Add("@Nome",          System.Data.SqlDbType.NVarChar, 200).Value    = dto.Nome;
+        cmd.Parameters.Add("@Relacao",       System.Data.SqlDbType.NVarChar, 100).Value    = (object?)dto.Relacao ?? DBNull.Value;
+        cmd.Parameters.Add("@Telefone",      System.Data.SqlDbType.NVarChar, 20).Value     = dto.Telefone;
+        cmd.Parameters.Add("@TipoContato",   System.Data.SqlDbType.NVarChar, 30).Value     = dto.TipoContato.ToUpperInvariant();
+        // CORREÇÃO #9: tipo explícito SmallInt — AddWithValue inferiria Int (4 bytes)
+        // para um short? do C#, gerando um plano de execução diferente para cada
+        // combinação de tipo inferido e poluindo o plan cache do SQL Server.
+        cmd.Parameters.Add("@Prioridade", System.Data.SqlDbType.SmallInt).Value = dto.Prioridade ?? 1;
 
         Guid novoId;
         DateTime criadoEm;
         await using (var reader = await cmd.ExecuteReaderAsync())
         {
             await reader.ReadAsync();
-            novoId = reader.GetGuid(0);
+            novoId   = reader.GetGuid(0);
             criadoEm = reader.GetDateTime(1);
         }
 
@@ -148,12 +152,12 @@ public class ContatosEmergenciaController : ControllerBase
 
         return StatusCode(201, new
         {
-            id = novoId,
-            nome = dto.Nome,
-            relacao = dto.Relacao,
-            telefone = dto.Telefone,
+            id          = novoId,
+            nome        = dto.Nome,
+            relacao     = dto.Relacao,
+            telefone    = dto.Telefone,
             tipoContato = dto.TipoContato.ToUpperInvariant(),
-            prioridade = dto.Prioridade ?? 1,
+            prioridade  = dto.Prioridade ?? 1,
             criadoEm,
         });
     }
@@ -179,18 +183,25 @@ public class ContatosEmergenciaController : ControllerBase
         await using var conn = new SqlConnection(connectionString);
         await conn.OpenAsync();
         await using var cmd = conn.CreateCommand();
+        cmd.CommandTimeout = 10;
+        // CORREÇÃO #14: adiciona AtualizadoEm que estava ausente no UPDATE anterior
         cmd.CommandText = @"
             UPDATE app.ContatosEmergencia
-            SET Nome = @Nome, Relacao = @Relacao, Telefone = @Telefone,
-                TipoContato = @TipoContato, Prioridade = @Prioridade
+            SET Nome        = @Nome,
+                Relacao     = @Relacao,
+                Telefone    = @Telefone,
+                TipoContato = @TipoContato,
+                Prioridade  = @Prioridade,
+                AtualizadoEm = SYSUTCDATETIME()
             WHERE Id = @Id AND ResponsavelId = @ResponsavelId AND Ativo = 1";
-        cmd.Parameters.AddWithValue("@Id", id);
-        cmd.Parameters.AddWithValue("@ResponsavelId", responsavelId);
-        cmd.Parameters.AddWithValue("@Nome", dto.Nome);
-        cmd.Parameters.AddWithValue("@Relacao", (object?)dto.Relacao ?? DBNull.Value);
-        cmd.Parameters.AddWithValue("@Telefone", dto.Telefone);
-        cmd.Parameters.AddWithValue("@TipoContato", dto.TipoContato.ToUpperInvariant());
-        cmd.Parameters.AddWithValue("@Prioridade", dto.Prioridade ?? 1);
+        cmd.Parameters.Add("@Id",            System.Data.SqlDbType.UniqueIdentifier).Value = id;
+        cmd.Parameters.Add("@ResponsavelId", System.Data.SqlDbType.UniqueIdentifier).Value = responsavelId;
+        cmd.Parameters.Add("@Nome",          System.Data.SqlDbType.NVarChar, 200).Value    = dto.Nome;
+        cmd.Parameters.Add("@Relacao",       System.Data.SqlDbType.NVarChar, 100).Value    = (object?)dto.Relacao ?? DBNull.Value;
+        cmd.Parameters.Add("@Telefone",      System.Data.SqlDbType.NVarChar, 20).Value     = dto.Telefone;
+        cmd.Parameters.Add("@TipoContato",   System.Data.SqlDbType.NVarChar, 30).Value     = dto.TipoContato.ToUpperInvariant();
+        // CORREÇÃO #9: tipo explícito SmallInt
+        cmd.Parameters.Add("@Prioridade", System.Data.SqlDbType.SmallInt).Value = dto.Prioridade ?? 1;
 
         var linhas = await cmd.ExecuteNonQueryAsync();
         if (linhas == 0)

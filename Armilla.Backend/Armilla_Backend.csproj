@@ -18,9 +18,10 @@
       Microsoft.IdentityModel.Tokens está incluído TRANSITIVAMENTE pelo
       JwtBearer — não precisa de PackageReference separado.
     -->
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFramework>net10.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>7686da9c-be8c-44d6-a9c9-935ad709816f</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>

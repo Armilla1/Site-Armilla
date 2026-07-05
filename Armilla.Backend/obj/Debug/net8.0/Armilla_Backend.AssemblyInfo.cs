@@ -10,10 +10,11 @@
 using System;
 using System.Reflection;
 
+[assembly: Microsoft.Extensions.Configuration.UserSecrets.UserSecretsIdAttribute("7686da9c-be8c-44d6-a9c9-935ad709816f")]
 [assembly: System.Reflection.AssemblyCompanyAttribute("Armilla_Backend")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+55d89f2d1fe462c9477a369a2ced66a7121fe224")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+99bf692c137fcb65369b88c071e9f46ea6d366d3")]
 [assembly: System.Reflection.AssemblyProductAttribute("Armilla_Backend")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Armilla_Backend")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

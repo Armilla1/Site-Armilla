@@ -481,9 +481,9 @@ html.contrast-dark .essence__faq-answer { color: #c8c0e8 !important; font-weight
 html.contrast-dark .essence__faq-num { color: #c084fc !important; background: rgba(168,85,247,0.15) !important; }
 html.contrast-dark .essence__faq-eyebrow { color: #c084fc !important; }
 
-/* ── Community / AboutProduct e outros fundos brancos ── */
+/* ── Community / About e outros fundos brancos ── */
 html.contrast-dark .community,
-html.contrast-dark .about-product,
+html.contrast-dark .about,
 html.contrast-dark .plans,
 html.contrast-dark .plans__card,
 html.contrast-dark .comprar__card,
@@ -663,5 +663,37 @@ html.contrast-light .plans__cta,
 html.contrast-light .comprar__cta,
 html.contrast-light .auth__submit,
 html.contrast-light .pg__submit {
+  color: #fff !important;
+}
+
+/* ── Hero no modo claro ── */
+html.contrast-light .hero {
+  background: #e8e0ff !important;
+}
+html.contrast-light .hero__title,
+html.contrast-light .hero__brand {
+  color: #1a0040 !important;
+}
+html.contrast-light .hero__btn {
+  color: #fff !important;
+}
+
+/* ── About no modo claro ── */
+html.contrast-light .about {
+  background: #f0ebff !important;
+}
+html.contrast-light .about__title {
+  color: #1a0040 !important;
+}
+html.contrast-light .about__subtitle {
+  color: #2d0060 !important;
+}
+html.contrast-light .about__btn {
+  background: #fff !important;
+  color: #1a0040 !important;
+  border-color: #1a0040 !important;
+}
+html.contrast-light .about__card-label {
+  background: rgba(26, 0, 64, 0.75) !important;
   color: #fff !important;
 }

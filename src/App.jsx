@@ -41,17 +41,19 @@ function App() {
   return (
     <>
       {console.log(`${page}`)}
-      {showNavbar && <Navbar currentPage={page} onNavigate={handleNavigate} />}
-      {page === 'home'       && <Home currentPage={page} onNavigate={handleNavigate}/>}
-      {page === 'informacoes'&& <PulseSafe currentPage={page} onNavigate={handleNavigate}/>}
-      {page === 'sobre-nos'  && <SobreNos currentPage={page} onNavigate={handleNavigate}/>}
-      {page === 'comprar'    && <Comprar currentPage={page} onNavigate={handleNavigate}/>}
-      {page === 'aplicativo' && <Aplicativo currentPage={page} onNavigate={handleNavigate} />}
-      {page === 'auth'       && <Auth onNavigate={handleNavigate} initialMode={authMode} />}
-      {page === 'dashboard'  && <Dashboard onNavegar={handleNavigate} />}
-      {page === 'chave-de-recuperacao' && (<ChaveDeRecuperacao onNavigate={handleNavigate} userEmail="teste@email.com" />)}
-      {page === 'nova-senha' && (<NovaSenha onNavigate={handleNavigate}/>)}
-      <ScrollToTop />
+      <div className="color-filter-wrap">
+        {showNavbar && <Navbar currentPage={page} onNavigate={handleNavigate} />}
+        {page === 'home'       && <Home currentPage={page} onNavigate={handleNavigate}/>}
+        {page === 'informacoes'&& <PulseSafe currentPage={page} onNavigate={handleNavigate}/>}
+        {page === 'sobre-nos'  && <SobreNos currentPage={page} onNavigate={handleNavigate}/>}
+        {page === 'comprar'    && <Comprar currentPage={page} onNavigate={handleNavigate}/>}
+        {page === 'aplicativo' && <Aplicativo currentPage={page} onNavigate={handleNavigate} />}
+        {page === 'auth'       && <Auth onNavigate={handleNavigate} initialMode={authMode} />}
+        {page === 'dashboard'  && <Dashboard onNavegar={handleNavigate} />}
+        {page === 'chave-de-recuperacao' && (<ChaveDeRecuperacao onNavigate={handleNavigate} userEmail="teste@email.com" />)}
+        {page === 'nova-senha' && (<NovaSenha onNavigate={handleNavigate}/>)}
+        <ScrollToTop />
+      </div>
   
       <AccessibilityProvider>
         <AccessibilityPanel />

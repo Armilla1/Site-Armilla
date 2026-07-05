@@ -3,16 +3,16 @@ import { useAccessibility } from '../../context/AccessibilityContext';
 import './Accessibility.css';
 
 const COLOR_MODES = [
-  { value: 'normal',       label: 'Normal',       desc: 'Cores originais do site', emoji: '✅' },
-  { value: 'protanopia',   label: 'Protanopia',   desc: 'Dificuldade com vermelho', emoji: '🔴' },
-  { value: 'deuteranopia', label: 'Deuteranopia', desc: 'Dificuldade com verde',    emoji: '🟢' },
-  { value: 'tritanopia',   label: 'Tritanopia',   desc: 'Dificuldade com azul',     emoji: '🔵' },
+  { value: 'normal',       label: 'Padrão',       desc: 'Cores originais do site' },
+  { value: 'protanopia',   label: 'Protanopia',   desc: 'Dificuldade com vermelho' },
+  { value: 'deuteranopia', label: 'Deuteranopia', desc: 'Dificuldade com verde' },
+  { value: 'tritanopia',   label: 'Tritanopia',   desc: 'Dificuldade com azul' },
 ];
 
 const CONTRAST_MODES = [
-  { value: 'dark',    label: 'Modo Escuro', icon: '🌙', desc: 'Para sensibilidade à luz' },
-  { value: 'light',   label: 'Modo Claro',  icon: '☀️', desc: 'Clareia ambientes escuros' },
-  { value: 'default', label: 'Padrão',      icon: '⚪', desc: 'Visual original' },
+  { value: 'dark',    label: 'Modo Escuro', desc: 'Para sensibilidade à luz' },
+  { value: 'light',   label: 'Modo Claro',  desc: 'Clareia ambientes escuros' },
+  { value: 'default', label: 'Padrão',      desc: 'Visual original' },
 ];
 
 const AccessibilityPanel = () => {
@@ -134,7 +134,6 @@ const AccessibilityPanel = () => {
                   aria-label={`${m.label} — ${m.desc}`}
                   title={m.desc}
                 >
-                  <span className="a11y-contrast-btn__icon" aria-hidden="true">{m.icon}</span>
                   <span className="a11y-contrast-btn__label">{m.label}</span>
                 </button>
               ))}
@@ -145,7 +144,7 @@ const AccessibilityPanel = () => {
               </strong>
             </p>
           </section>
-
+ 
           {/* ── 2. DALTONISMO ── */}
           <section className="a11y-section" aria-labelledby="a11y-color-title">
             <h3 id="a11y-color-title" className="a11y-section__title">Daltonismo</h3>
@@ -164,7 +163,6 @@ const AccessibilityPanel = () => {
                     className="a11y-sr-only"
                   />
                   <span className="a11y-color-option__left">
-                    <span className="a11y-color-option__emoji" aria-hidden="true">{m.emoji}</span>
                     <span className="a11y-color-option__label">{m.label}</span>
                   </span>
                   <span className="a11y-color-option__desc">{m.desc}</span>
@@ -175,7 +173,7 @@ const AccessibilityPanel = () => {
               ))}
             </div>
           </section>
-
+ 
           {/* ── 3. TEXTO ── */}
           <section className="a11y-section" aria-labelledby="a11y-font-title">
             <h3 id="a11y-font-title" className="a11y-section__title">Tamanho do texto</h3>
@@ -200,10 +198,10 @@ const AccessibilityPanel = () => {
               </button>
             </div>
             <p className="a11y-hint" aria-live="polite">
-              {fontLarge ? '📏 Texto aumentado em 25%' : '📏 Tamanho padrão ativo'}
+              {fontLarge ? 'Texto aumentado em 25%' : 'Tamanho padrão ativo'}
             </p>
           </section>
-
+ 
           {/* ── 4. VOZ ── */}
           <section className="a11y-section" aria-labelledby="a11y-tts-title">
             <h3 id="a11y-tts-title" className="a11y-section__title">Leitura por voz</h3>
@@ -212,16 +210,16 @@ const AccessibilityPanel = () => {
                 className="a11y-tts-btn"
                 onClick={speak}
                 aria-label="Ler o conteúdo da página em voz alta"
-              >🔊 Ouvir página</button>
+              >Ouvir página</button>
               <button
                 className="a11y-tts-btn a11y-tts-btn--stop"
                 onClick={stopSpeak}
                 aria-label="Parar leitura por voz"
-              >⏹ Parar</button>
+              >Parar</button>
             </div>
           </section>
-
-          <p className="a11y-panel__note">♿ Preferências salvas automaticamente</p>
+ 
+          <p className="a11y-panel__note">Preferências salvas automaticamente</p>
         </div>
       )}
     </>

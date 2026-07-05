@@ -28,27 +28,40 @@
 ══════════════════════════════════════ */
 .a11y-trigger {
   position: fixed !important;
-  bottom: 28px;
-  right: 28px;
-  z-index: 99999 !important;   /* acima de tudo */
-  filter: none !important;      /* imune a filtros de daltonismo */
+  top: 50% !important;
+  right: 0 !important;
+  bottom: auto !important;
+  transform: translateY(-50%) translateX(0) !important;
+  z-index: 99999 !important;
+  filter: none !important;
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 8px;
-  background: linear-gradient(135deg, #640E86, #111D96) !important;
+  gap: 6px;
+  background: linear-gradient(180deg, #640E86, #111D96) !important;
   color: #fff !important;
-  border: 2px solid rgba(255,255,255,0.25) !important;
-  border-radius: 30px;
-  padding: 12px 20px;
+  border: 2px solid rgba(255,255,255,0.2) !important;
+  border-right: none !important;
+  border-radius: 14px 0 0 14px !important;
+  padding: 16px 10px !important;
   font-family: var(--font-body, sans-serif);
   font-weight: 800;
-  font-size: 14px;
+  font-size: 11px;
   cursor: pointer;
-  box-shadow: 0 6px 28px rgba(100,14,134,0.5) !important;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: -4px 0 24px rgba(100,14,134,0.45) !important;
+  transition: padding 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
   white-space: nowrap;
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  letter-spacing: 0.5px;
 }
-.a11y-trigger:hover { transform: translateY(-2px); box-shadow: 0 10px 36px rgba(100,14,134,0.65) !important; }
+.a11y-trigger svg {
+  transform: rotate(90deg);
+}
+.a11y-trigger:hover {
+  padding: 16px 16px 16px 10px !important;
+  box-shadow: -8px 0 32px rgba(100,14,134,0.65) !important;
+}
 .a11y-trigger:focus-visible { outline: 3px solid #facc15 !important; outline-offset: 3px; }
 
 /* ══════════════════════════════════════
@@ -56,8 +69,9 @@
 ══════════════════════════════════════ */
 .a11y-panel {
   position: fixed !important;
-  bottom: 88px;
-  right: 28px;
+  top: 50% !important;
+  right: 52px !important;
+  transform: translateY(-50%) !important;
   z-index: 99998 !important;
   filter: none !important;      /* imune a filtros de daltonismo */
   width: 320px;
@@ -395,8 +409,17 @@ button:focus:not(:focus-visible) { outline: none; }
 
 /* ── Responsivo ── */
 @media (max-width: 480px) {
-  .a11y-panel { right: 10px; bottom: 76px; width: calc(100vw - 20px); max-width: 340px; }
-  .a11y-trigger { right: 10px; bottom: 14px; font-size: 12px; padding: 9px 14px; }
+  .a11y-panel {
+    right: 44px !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+    width: calc(100vw - 60px);
+    max-width: 300px;
+  }
+  .a11y-trigger {
+    padding: 12px 8px !important;
+    font-size: 10px;
+  }
 }
 
 
@@ -458,9 +481,9 @@ html.contrast-dark .essence__faq-answer { color: #c8c0e8 !important; font-weight
 html.contrast-dark .essence__faq-num { color: #c084fc !important; background: rgba(168,85,247,0.15) !important; }
 html.contrast-dark .essence__faq-eyebrow { color: #c084fc !important; }
 
-/* ── Community / AboutProduct e outros fundos brancos ── */
+/* ── Community / About e outros fundos brancos ── */
 html.contrast-dark .community,
-html.contrast-dark .about-product,
+html.contrast-dark .about,
 html.contrast-dark .plans,
 html.contrast-dark .plans__card,
 html.contrast-dark .comprar__card,
@@ -640,5 +663,37 @@ html.contrast-light .plans__cta,
 html.contrast-light .comprar__cta,
 html.contrast-light .auth__submit,
 html.contrast-light .pg__submit {
+  color: #fff !important;
+}
+
+/* ── Hero no modo claro ── */
+html.contrast-light .hero {
+  background: #e8e0ff !important;
+}
+html.contrast-light .hero__title,
+html.contrast-light .hero__brand {
+  color: #1a0040 !important;
+}
+html.contrast-light .hero__btn {
+  color: #fff !important;
+}
+
+/* ── About no modo claro ── */
+html.contrast-light .about {
+  background: #f0ebff !important;
+}
+html.contrast-light .about__title {
+  color: #1a0040 !important;
+}
+html.contrast-light .about__subtitle {
+  color: #2d0060 !important;
+}
+html.contrast-light .about__btn {
+  background: #fff !important;
+  color: #1a0040 !important;
+  border-color: #1a0040 !important;
+}
+html.contrast-light .about__card-label {
+  background: rgba(26, 0, 64, 0.75) !important;
   color: #fff !important;
 }

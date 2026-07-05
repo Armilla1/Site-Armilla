@@ -14,7 +14,7 @@ import NovaSenha from './pages/NovaSenha';
 import ScrollToTop from './components/ScrollToTop/ScrollToTop';
 import Dashboard from './pages/Dashboard.jsx';
 
-function App() {
+function AppContent() {
   const [page, setPage] = useState("home");
   const [authMode, setAuthMode] = useState('login');
 
@@ -40,26 +40,29 @@ function App() {
 
   return (
     <>
-      {console.log(`${page}`)}
       <div className="color-filter-wrap">
         {showNavbar && <Navbar currentPage={page} onNavigate={handleNavigate} />}
-        {page === 'home'       && <Home currentPage={page} onNavigate={handleNavigate}/>}
-        {page === 'informacoes'&& <PulseSafe currentPage={page} onNavigate={handleNavigate}/>}
-        {page === 'sobre-nos'  && <SobreNos currentPage={page} onNavigate={handleNavigate}/>}
-        {page === 'comprar'    && <Comprar currentPage={page} onNavigate={handleNavigate}/>}
-        {page === 'aplicativo' && <Aplicativo currentPage={page} onNavigate={handleNavigate} />}
-        {page === 'auth'       && <Auth onNavigate={handleNavigate} initialMode={authMode} />}
-        {page === 'dashboard'  && <Dashboard onNavegar={handleNavigate} />}
+        {page === 'home'        && <Home currentPage={page} onNavigate={handleNavigate}/>}
+        {page === 'informacoes' && <PulseSafe currentPage={page} onNavigate={handleNavigate}/>}
+        {page === 'sobre-nos'   && <SobreNos currentPage={page} onNavigate={handleNavigate}/>}
+        {page === 'comprar'     && <Comprar currentPage={page} onNavigate={handleNavigate}/>}
+        {page === 'aplicativo'  && <Aplicativo currentPage={page} onNavigate={handleNavigate} />}
+        {page === 'auth'        && <Auth onNavigate={handleNavigate} initialMode={authMode} />}
+        {page === 'dashboard'   && <Dashboard onNavegar={handleNavigate} />}
         {page === 'chave-de-recuperacao' && (<ChaveDeRecuperacao onNavigate={handleNavigate} userEmail="teste@email.com" />)}
-        {page === 'nova-senha' && (<NovaSenha onNavigate={handleNavigate}/>)}
+        {page === 'nova-senha'  && (<NovaSenha onNavigate={handleNavigate}/>)}
         <ScrollToTop />
       </div>
-  
-      <AccessibilityProvider>
-        <AccessibilityPanel />
-      </AccessibilityProvider>
-      
-      </>
+      <AccessibilityPanel />
+    </>
+  );
+}
+
+function App() {
+  return (
+    <AccessibilityProvider>
+      <AppContent />
+    </AccessibilityProvider>
   );
 }
 

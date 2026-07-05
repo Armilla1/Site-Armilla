@@ -2,6 +2,40 @@ import React, { useEffect, useRef } from 'react';
 import { useAccessibility } from '../../context/AccessibilityContext';
 import './Accessibility.css';
 
+/* ── Filtros de daltonismo (matrizes científicas padrão) ───────────
+   Fonte: Machado et al. (2009) — padrão usado pela indústria.
+   Aplicados via SVG <feColorMatrix> para máxima fidelidade.
+──────────────────────────────────────────────────────────────────── */
+const SVG_FILTERS = `
+<svg xmlns="http://www.w3.org/2000/svg" class="a11y-svg-filters" aria-hidden="true" focusable="false">
+  <defs>
+    <!-- Protanopia: deficiência no canal vermelho (L-cones) -->
+    <filter id="a11y-filter-protanopia" color-interpolation-filters="linearRGB">
+      <feColorMatrix type="matrix" values="
+        0.152  1.053 -0.205  0  0
+        0.115  0.786  0.099  0  0
+       -0.004 -0.048  1.052  0  0
+        0      0      0      1  0"/>
+    </filter>
+    <!-- Deuteranopia: deficiência no canal verde (M-cones) -->
+    <filter id="a11y-filter-deuteranopia" color-interpolation-filters="linearRGB">
+      <feColorMatrix type="matrix" values="
+        0.367  0.861 -0.228  0  0
+        0.280  0.673  0.047  0  0
+       -0.012  0.043  0.969  0  0
+        0      0      0      1  0"/>
+    </filter>
+    <!-- Tritanopia: deficiência no canal azul (S-cones) -->
+    <filter id="a11y-filter-tritanopia" color-interpolation-filters="linearRGB">
+      <feColorMatrix type="matrix" values="
+        1.256 -0.077 -0.179  0  0
+       -0.078  0.931  0.148  0  0
+        0.005  0.691  0.304  0  0
+        0      0      0      1  0"/>
+    </filter>
+  </defs>
+</svg>`;
+
 const COLOR_MODES = [
   { value: 'normal',       label: 'Padrão',       desc: 'Cores originais do site' },
   { value: 'protanopia',   label: 'Protanopia',   desc: 'Dificuldade com vermelho' },
@@ -26,7 +60,19 @@ const AccessibilityPanel = () => {
   const panelRef = useRef(null);
   const btnRef   = useRef(null);
 
-  // ESC fecha painel
+  /* ── Injeta SVG de filtros no body (uma única vez) ── */
+  useEffect(() => {
+    if (document.getElementById('a11y-filter-protanopia')) return;
+    const div = document.createElement('div');
+    div.innerHTML = SVG_FILTERS;
+    document.body.appendChild(div.firstElementChild);
+    return () => {
+      const el = document.querySelector('.a11y-svg-filters');
+      if (el) el.remove();
+    };
+  }, []);
+
+  /* ── ESC fecha painel ── */
   useEffect(() => {
     if (!panelOpen) return;
     const onKey = (e) => {
@@ -36,7 +82,7 @@ const AccessibilityPanel = () => {
     return () => document.removeEventListener('keydown', onKey);
   }, [panelOpen, setPanelOpen]);
 
-  // Foca no primeiro elemento ao abrir
+  /* ── Foca no primeiro elemento ao abrir ── */
   useEffect(() => {
     if (panelOpen) {
       setTimeout(() => {
@@ -45,7 +91,7 @@ const AccessibilityPanel = () => {
     }
   }, [panelOpen]);
 
-  // Fecha ao clicar fora
+  /* ── Fecha ao clicar fora ── */
   useEffect(() => {
     if (!panelOpen) return;
     const onClick = (e) => {
@@ -58,7 +104,7 @@ const AccessibilityPanel = () => {
     return () => document.removeEventListener('mousedown', onClick);
   }, [panelOpen, setPanelOpen]);
 
-  // Leitura por voz
+  /* ── Leitura por voz ── */
   const speak = () => {
     if (!window.speechSynthesis) return;
     window.speechSynthesis.cancel();
@@ -74,7 +120,7 @@ const AccessibilityPanel = () => {
 
   return (
     <>
-      {/* ── Botão flutuante — NUNCA afetado por filtros ── */}
+      {/* ── Botão flutuante — filter:none garante que nunca some ── */}
       <button
         ref={btnRef}
         className="a11y-trigger"
@@ -93,7 +139,7 @@ const AccessibilityPanel = () => {
         <span>Acessibilidade</span>
       </button>
 
-      {/* ── Painel — NUNCA afetado por filtros ── */}
+      {/* ── Painel — filter:none garante que nunca some ── */}
       {panelOpen && (
         <div
           ref={panelRef}
@@ -118,7 +164,7 @@ const AccessibilityPanel = () => {
               className="a11y-panel__close"
               onClick={() => setPanelOpen(false)}
               aria-label="Fechar painel"
-            >✕</button>
+            >x</button>
           </div>
 
           {/* ── 1. CONTRASTE ── */}
@@ -144,7 +190,7 @@ const AccessibilityPanel = () => {
               </strong>
             </p>
           </section>
- 
+
           {/* ── 2. DALTONISMO ── */}
           <section className="a11y-section" aria-labelledby="a11y-color-title">
             <h3 id="a11y-color-title" className="a11y-section__title">Daltonismo</h3>
@@ -167,13 +213,13 @@ const AccessibilityPanel = () => {
                   </span>
                   <span className="a11y-color-option__desc">{m.desc}</span>
                   {colorMode === m.value && (
-                    <span className="a11y-color-option__check" aria-hidden="true">✓</span>
+                    <span className="a11y-color-option__check" aria-hidden="true">ok</span>
                   )}
                 </label>
               ))}
             </div>
           </section>
- 
+
           {/* ── 3. TEXTO ── */}
           <section className="a11y-section" aria-labelledby="a11y-font-title">
             <h3 id="a11y-font-title" className="a11y-section__title">Tamanho do texto</h3>
@@ -182,10 +228,10 @@ const AccessibilityPanel = () => {
                 className={`a11y-font-btn ${!fontLarge ? 'a11y-font-btn--active' : ''}`}
                 onClick={() => setFontLarge(false)}
                 aria-pressed={!fontLarge}
-                aria-label="Texto no tamanho padrão"
+                aria-label="Texto no tamanho padrao"
               >
                 <span className="a11y-font-btn__icon">Aa</span>
-                Texto Padrão
+                Texto Padrao
               </button>
               <button
                 className={`a11y-font-btn ${fontLarge ? 'a11y-font-btn--active' : ''}`}
@@ -198,10 +244,10 @@ const AccessibilityPanel = () => {
               </button>
             </div>
             <p className="a11y-hint" aria-live="polite">
-              {fontLarge ? 'Texto aumentado em 25%' : 'Tamanho padrão ativo'}
+              {fontLarge ? 'Texto aumentado em 25%' : 'Tamanho padrao ativo'}
             </p>
           </section>
- 
+
           {/* ── 4. VOZ ── */}
           <section className="a11y-section" aria-labelledby="a11y-tts-title">
             <h3 id="a11y-tts-title" className="a11y-section__title">Leitura por voz</h3>
@@ -209,8 +255,8 @@ const AccessibilityPanel = () => {
               <button
                 className="a11y-tts-btn"
                 onClick={speak}
-                aria-label="Ler o conteúdo da página em voz alta"
-              >Ouvir página</button>
+                aria-label="Ler o conteudo da pagina em voz alta"
+              >Ouvir pagina</button>
               <button
                 className="a11y-tts-btn a11y-tts-btn--stop"
                 onClick={stopSpeak}
@@ -218,8 +264,8 @@ const AccessibilityPanel = () => {
               >Parar</button>
             </div>
           </section>
- 
-          <p className="a11y-panel__note">Preferências salvas automaticamente</p>
+
+          <p className="a11y-panel__note">Preferencias salvas automaticamente</p>
         </div>
       )}
     </>

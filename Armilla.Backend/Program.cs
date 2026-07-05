@@ -126,6 +126,10 @@ var app = builder.Build();
 var ambiente = app.Environment.IsDevelopment() ? "Desenvolvimento" : "Producao";
 app.UseCors(ambiente);
 
+// Servir arquivos do React (wwwroot)
+app.UseDefaultFiles();
+app.UseStaticFiles();
+
 // 2. Swagger — Habilitado temporariamente também em Produção para facilitar os testes!
 app.UseSwagger();
 app.UseSwaggerUI(); // Interface gráfica em /swagger
@@ -144,5 +148,8 @@ app.UseRateLimiter();
 // 6. Mapeia as rotas para os controllers
 //    AuthController → /api/auth/login, /api/auth/cadastro, /api/auth/refresh, /api/auth/logout
 app.MapControllers();
+
+// 7. SPA Fallback: Qualquer rota que não seja da API será redirecionada para o React (index.html)
+app.MapFallbackToFile("index.html");
 
 app.Run();

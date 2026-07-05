@@ -425,8 +425,7 @@ public class SecurityHeadersStartupFilter : IStartupFilter
                     "object-src 'none'; "                  +   // sem Flash/ActiveX
                     "base-uri 'self'; "                    +   // previne base tag injection
                     "form-action 'self'; "                 +   // forms só submetem para self
-                    "frame-ancestors 'none'; "             +   // não carrega em iframe
-                    "upgrade-insecure-requests";               // força HTTPS automático
+                    "frame-ancestors 'none'; ";
 
                 await proxima(context);
             });

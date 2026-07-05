@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './Dashboard.css';
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://armilla.runasp.net';
+const API_URL = import.meta.env.DEV ? "http://localhost:5016" : "";
 
 // =============================================================================
 // CONSTANTES DE EMERGÊNCIA

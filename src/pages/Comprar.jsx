@@ -188,7 +188,7 @@ const Comprar = (props) => {
           <div className="comprar__hero-orb comprar__hero-orb--3" />
         </div>
         <div className="comprar__hero-content">
-          <div className="comprar__hero-badge">🛡️ Segurança para sua família</div>
+          <div className="comprar__hero-badge">Segurança para sua família</div>
           <h1 className="comprar__hero-title">
             Escolha o plano<br />
             <span className="comprar__hero-gradient">ideal para você</span>
@@ -224,7 +224,7 @@ const Comprar = (props) => {
               className={`comprar__card comprar__card--${plan.color} ${plan.recommended ? 'comprar__card--recommended' : ''}`}
             >
               {plan.recommended && (
-                <div className="comprar__recommended-badge">⭐ Mais Popular</div>
+                <div className="comprar__recommended-badge">Mais Popular</div>
               )}
 
               <div className="comprar__card-top">

@@ -576,7 +576,11 @@ const Auth = ({ onNavigate, initialMode = 'login' }) => {
       {/* Decorative side panel (desktop) */}
       <div className="auth__panel">
         <div className="auth__panel-content">
-          <div className="auth__panel-shield">🛡️</div>
+          <div className="auth__panel-shield">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" style={{ margin: '0 auto 16px', display: 'block' }}>
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+          </div>
           <h3 className="auth__panel-title">Segurança que você pode sentir</h3>
           <p className="auth__panel-text">Monitore, proteja e acompanhe seu filho em tempo real — onde você estiver.</p>
           <div className="auth__panel-stats">

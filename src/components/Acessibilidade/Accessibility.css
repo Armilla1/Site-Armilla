@@ -589,20 +589,125 @@ html.contrast-light .aplicativo__download h2,
 html.contrast-light .aplicativo__download p  { color: #1a0040 !important; }
 
 /* ── Auth ── */
-html.contrast-light .auth { background: #e8e0ff !important; }
-html.contrast-light .auth__card {
-  background: #fff !important;
-  border-color: rgba(124,58,237,0.2) !important;
+html.contrast-light .auth {
+  background: #f0ebff !important;
 }
-html.contrast-light .auth__form-title { color: #1a0040 !important; }
-html.contrast-light .auth__form-sub   { color: #3b0080 !important; }
-html.contrast-light .auth__link       { color: #7c3aed !important; }
-html.contrast-light .auth__submit     { color: #fff !important; }
+html.contrast-light .auth__logo-text {
+  color: #1a0040 !important;
+}
+html.contrast-light .auth__back {
+  color: #1a0040 !important;
+}
+html.contrast-light .auth__back-mode {
+  color: #1a0040 !important;
+}
+html.contrast-light .auth__tab {
+  color: #2d0060 !important;
+}
+html.contrast-light .auth__tab:not(.auth__tab--active) {
+  color: #4a3070 !important;
+  background: rgba(124, 58, 237, 0.08) !important;
+  border: 1px solid rgba(124, 58, 237, 0.15) !important;
+}
+html.contrast-light .auth__tab--active {
+  background: linear-gradient(135deg, #7c3aed, #2563eb) !important;
+  color: #fff !important;
+  box-shadow: 0 2px 12px rgba(124, 58, 237, 0.3) !important;
+}
+html.contrast-light .auth__form-title {
+  color: #1a0040 !important;
+}
+html.contrast-light .auth__form-sub {
+  color: #4a3070 !important;
+}
+html.contrast-light .auth__label {
+  color: #1a0040 !important;
+}
+html.contrast-light .auth__forgot-link {
+  color: #7c3aed !important;
+}
+html.contrast-light .auth__forgot-link:hover {
+  color: #6d28d9 !important;
+}
+html.contrast-light .auth__input-icon {
+  color: #4a3070 !important;
+}
+html.contrast-light .auth__input {
+  background: #fff !important;
+  border-color: rgba(124, 58, 237, 0.3) !important;
+  color: #1a0040 !important;
+}
+html.contrast-light .auth__input::placeholder {
+  color: rgba(26, 0, 64, 0.4) !important;
+}
+html.contrast-light .auth__input:focus {
+  border-color: #7c3aed !important;
+  background: rgba(124, 58, 237, 0.04) !important;
+}
+html.contrast-light .auth__toggle-pass {
+  color: #4a3070 !important;
+}
+html.contrast-light .auth__terms-label {
+  color: #2d0060 !important;
+}
+html.contrast-light .auth__terms-link {
+  color: #7c3aed !important;
+}
+html.contrast-light .auth__divider span {
+  color: #4a3070 !important;
+  background: #f0ebff !important;
+}
+html.contrast-light .auth__divider::before,
+html.contrast-light .auth__divider::after {
+  background: rgba(124, 58, 237, 0.2) !important;
+}
+html.contrast-light .auth__social-btn {
+  background: #fff !important;
+  border-color: rgba(124, 58, 237, 0.2) !important;
+  color: #2d0060 !important;
+}
+html.contrast-light .auth__social-btn:hover {
+  background: rgba(124, 58, 237, 0.05) !important;
+  border-color: rgba(124, 58, 237, 0.4) !important;
+}
+html.contrast-light .auth__switch {
+  color: #4a3070 !important;
+}
+html.contrast-light .auth__switch-link {
+  color: #7c3aed !important;
+}
+html.contrast-light .auth__switch-link:hover {
+  color: #6d28d9 !important;
+}
+html.contrast-light .auth__panel {
+  background: linear-gradient(160deg, #ede9fe 0%, #e0d8ff 40%, #ede9fe 100%) !important;
+  border-left: 1px solid rgba(124, 58, 237, 0.2) !important;
+}
+html.contrast-light .auth__panel-title {
+  color: #1a0040 !important;
+}
+html.contrast-light .auth__panel-text {
+  color: #4a3070 !important;
+}
+html.contrast-light .auth__panel-stat {
+  background: #fff !important;
+  border: 1px solid rgba(124, 58, 237, 0.2) !important;
+}
+html.contrast-light .auth__panel-stat-label {
+  color: #4a3070 !important;
+}
+html.contrast-light .auth__panel-pigeon-circle {
+  background: linear-gradient(135deg, rgba(124, 58, 237, 0.2), rgba(56, 189, 248, 0.15)) !important;
+  border: 1px solid rgba(124, 58, 237, 0.25) !important;
+}
+html.contrast-light .auth__panel-pigeon-text {
+  color: #4a3070 !important;
+}
 
 /* ── Chave de recuperação / Nova senha (pages escuras) ── */
 html.contrast-light .new-password,
 html.contrast-light .recovery-key {
-  background: #e8e0ff !important;
+  background: #f0ebff !important;
 }
 html.contrast-light .new-password__card,
 html.contrast-light .recovery-key__card {
@@ -611,7 +716,25 @@ html.contrast-light .recovery-key__card {
 }
 html.contrast-light .new-password__panel,
 html.contrast-light .recovery-key__panel {
-  background: linear-gradient(135deg, #5b21b6, #4c1d95) !important;
+  background: linear-gradient(160deg, #ede9fe 0%, #e0d8ff 40%, #ede9fe 100%) !important;
+  border-left: 1px solid rgba(124, 58, 237, 0.2) !important;
+}
+html.contrast-light .new-password__panel-title,
+html.contrast-light .recovery-key__panel-title {
+  color: #1a0040 !important;
+}
+html.contrast-light .new-password__panel-text,
+html.contrast-light .recovery-key__panel-text {
+  color: #4a3070 !important;
+}
+html.contrast-light .new-password__panel-tip-num,
+html.contrast-light .recovery-key__panel-tip-num {
+  background: rgba(124, 58, 237, 0.15) !important;
+  color: #7c3aed !important;
+}
+html.contrast-light .new-password__panel-tips li,
+html.contrast-light .recovery-key__panel-tips li {
+  color: #2d0060 !important;
 }
 html.contrast-light .new-password__title,
 html.contrast-light .new-password__subtitle,
@@ -621,6 +744,30 @@ html.contrast-light .new-password__label,
 html.contrast-light .recovery-key__subtitle-sm { color: #2d0060 !important; }
 html.contrast-light .new-password__submit,
 html.contrast-light .recovery-key__submit { color: #fff !important; }
+html.contrast-light .recovery-key__digit {
+  background: #fff !important;
+  border-color: rgba(124, 58, 237, 0.3) !important;
+  color: #1a0040 !important;
+}
+html.contrast-light .recovery-key__digit--filled {
+  background: rgba(124, 58, 237, 0.05) !important;
+  border-color: #7c3aed !important;
+}
+html.contrast-light .recovery-key__resend {
+  color: #4a3070 !important;
+}
+html.contrast-light .recovery-key__resend-btn {
+  color: #7c3aed !important;
+}
+html.contrast-light .new-password__input {
+  background: #fff !important;
+  border-color: rgba(124, 58, 237, 0.3) !important;
+  color: #1a0040 !important;
+}
+html.contrast-light .new-password__input:focus {
+  border-color: #7c3aed !important;
+  background: rgba(124, 58, 237, 0.04) !important;
+}
 
 /* ── Sobre Nós ── */
 html.contrast-light .sobre__hero { background: #e8e0ff !important; }

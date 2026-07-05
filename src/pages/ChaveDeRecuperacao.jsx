@@ -283,15 +283,20 @@ const ChaveDeRecuperacao = ({ onNavigate, userEmail = 'seu e-mail' }) => {
       {/* Painel lateral decorativo – idêntico ao Auth */}
       <div className="recovery-key__panel">
         <div className="recovery-key__panel-content">
-          <div className="recovery-key__panel-icon">🔐</div>
+          <div className="recovery-key__panel-icon">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" style={{ margin: '0 auto 16px', display: 'block' }}>
+              <rect x="3" y="11" width="18" height="11" rx="2" ry="2" strokeLinecap="round" strokeLinejoin="round"/>
+              <path d="M7 11V7a5 5 0 0 1 10 0v4" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+          </div>
           <h3 className="recovery-key__panel-title">Sua segurança em primeiro lugar</h3>
           <p className="recovery-key__panel-text">
             A chave de recuperação garante que apenas você possa redefinir o acesso à sua conta Armilla.
           </p>
           <ul className="recovery-key__panel-tips">
-            <li>✅ Verifique a pasta de spam</li>
-            <li>✅ A chave expira em 15 minutos</li>
-            <li>✅ Cada chave é de uso único</li>
+            <li>Verifique a pasta de spam</li>
+            <li>A chave expira em 15 minutos</li>
+            <li>Cada chave é de uso único</li>
           </ul>
         </div>
       </div>

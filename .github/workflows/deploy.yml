@@ -20,16 +20,16 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      # 2. Configura Node.js 20 (LTS)
+      # 2. Configura Node.js 22 (LTS)
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '22'
           cache: 'npm'
 
       # 3. Instala dependências (equivalente a npm install)
       - name: Instalar dependências
-        run: npm ci
+        run: npm install
 
       # 4. Build de produção
       #    VITE_API_URL vem do GitHub Secret configurado em:

@@ -22,6 +22,14 @@ function App() {
     if (pagina === 'login' || pagina === 'register') {
       setAuthMode(pagina);
       setPage('auth');
+    } else if (pagina === 'app_area') {
+      const token = sessionStorage.getItem('armilla_token');
+      if (token) {
+        setPage('dashboard');
+      } else {
+        setAuthMode('login');
+        setPage('auth');
+      }
     } else {
       setPage(pagina);
     }

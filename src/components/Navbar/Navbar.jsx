@@ -20,6 +20,12 @@ const Navbar = ({ onNavigate, currentPage }) => {
     { label: 'Aplicativo',  page: 'aplicativo',  href: null },
   ];
 
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    setIsLoggedIn(!!sessionStorage.getItem('armilla_token'));
+  }, [currentPage]);
+
   const handleLinkClick = (link) => {
     setMenuOpen(false);
     if (onNavigate) onNavigate(link.page);
@@ -47,17 +53,46 @@ const Navbar = ({ onNavigate, currentPage }) => {
               </a>
             </li>
           ))}
-          <li className="navbar__auth-mobile-item">
-            <button className="navbar__btn navbar__btn--login" onClick={() => { setMenuOpen(false); onNavigate && onNavigate('login'); }}>Entrar</button>
-          </li>
-          <li className="navbar__auth-mobile-item">
-            <button className="navbar__btn navbar__btn--signup" onClick={() => { setMenuOpen(false); onNavigate && onNavigate('register'); }}>Cadastrar</button>
-          </li>
+          {isLoggedIn ? (
+            <>
+              <li className="navbar__auth-mobile-item">
+                <button className="navbar__btn navbar__btn--login" onClick={() => { setMenuOpen(false); onNavigate && onNavigate('dashboard'); }}>Painel</button>
+              </li>
+              <li className="navbar__auth-mobile-item">
+                <button className="navbar__btn navbar__btn--signup" onClick={() => {
+                  setMenuOpen(false);
+                  sessionStorage.clear();
+                  window.location.reload();
+                }}>Sair</button>
+              </li>
+            </>
+          ) : (
+            <>
+              <li className="navbar__auth-mobile-item">
+                <button className="navbar__btn navbar__btn--login" onClick={() => { setMenuOpen(false); onNavigate && onNavigate('login'); }}>Entrar</button>
+              </li>
+              <li className="navbar__auth-mobile-item">
+                <button className="navbar__btn navbar__btn--signup" onClick={() => { setMenuOpen(false); onNavigate && onNavigate('register'); }}>Cadastrar</button>
+              </li>
+            </>
+          )}
         </ul>
 
         <div className="navbar__auth">
-          <button className="navbar__btn navbar__btn--login" onClick={() => onNavigate && onNavigate('login')}>Entrar</button>
-          <button className="navbar__btn navbar__btn--signup" onClick={() => onNavigate && onNavigate('register')}>Cadastrar</button>
+          {isLoggedIn ? (
+            <>
+              <button className="navbar__btn navbar__btn--login" onClick={() => onNavigate && onNavigate('dashboard')}>Painel</button>
+              <button className="navbar__btn navbar__btn--signup" onClick={() => {
+                sessionStorage.clear();
+                window.location.reload();
+              }}>Sair</button>
+            </>
+          ) : (
+            <>
+              <button className="navbar__btn navbar__btn--login" onClick={() => onNavigate && onNavigate('login')}>Entrar</button>
+              <button className="navbar__btn navbar__btn--signup" onClick={() => onNavigate && onNavigate('register')}>Cadastrar</button>
+            </>
+          )}
         </div>
 
         <button

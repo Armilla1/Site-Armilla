@@ -41,3 +41,6 @@ dist-ssr
 .env
 .env.local
 .env.*.local
+
+# Builds de publicação adicionais
+**/publish-monsterasp/

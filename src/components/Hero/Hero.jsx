@@ -83,20 +83,20 @@ const Hero = (props) => {
             Monitoramento em tempo real, alertas inteligentes e rotas seguras — tudo na palma da sua mão. A Armilla transforma seu smartphone no guardião do seu filho.
           </p>
           <div className="app-hero__ctas">
-            <button className="app-hero__cta app-hero__cta--primary" onClick={() => onNavigate && onNavigate('register')}>
+            <button className="app-hero__cta app-hero__cta--primary" onClick={() => props.onNavigate && props.onNavigate('register')}>
               <svg viewBox="0 0 20 20" fill="none" width="18" height="18">
                 <path d="M10 2a8 8 0 100 16A8 8 0 0010 2zm0 3l4 4H6l4-4zm0 10l-4-4h8l-4 4z" fill="currentColor"/>
               </svg>
               Criar conta grátis
             </button>
-            <button className="app-hero__cta app-hero__cta--secondary">
+            <button className="app-hero__cta app-hero__cta--secondary" onClick={() => props.onNavigate && props.onNavigate('app_area')}>
               <svg viewBox="0 0 20 20" fill="none" width="18" height="18">
                 <rect x="5" y="2" width="10" height="16" rx="2" stroke="currentColor" strokeWidth="1.5"/>
                 <circle cx="10" cy="15.5" r="0.75" fill="currentColor"/>
               </svg>
               Baixar para iOS
             </button>
-            <button className="app-hero__cta app-hero__cta--secondary">
+            <button className="app-hero__cta app-hero__cta--secondary" onClick={() => props.onNavigate && props.onNavigate('app_area')}>
               <svg viewBox="0 0 20 20" fill="none" width="18" height="18">
                 <path d="M3 17L10 3l7 14H3z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round"/>
               </svg>

@@ -65,14 +65,13 @@ const Aplicativo = ({ onNavigate }) => {
           </a>
 
           <a
-            href="https://play.google.com/store"
-            target="_blank"
-            rel="noopener noreferrer"
+            href="#"
+            onClick={(e) => { e.preventDefault(); onNavigate('app_area'); }}
             className="aplicativo__hero-playstore"
           >
             <img
               src={googleButton}
-              alt="Disponível no Google Play"
+              alt="Acessar aplicativo"
             />
           </a>
         </div>
@@ -120,7 +119,7 @@ const Aplicativo = ({ onNavigate }) => {
         <div className="aplicativo__howto-cta">
           <button
             className="aplicativo__howto-btn"
-            onClick={() => onNavigate('comprar')}
+            onClick={() => onNavigate('app_area')}
           >
             Baixe agora
           </button>

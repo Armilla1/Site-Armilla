@@ -5,6 +5,8 @@ on:
   push:
     branches:
       - main
+      - deploy-producao
+      - cainan
   # Permite rodar manualmente pelo painel do GitHub Actions
   workflow_dispatch:
 
